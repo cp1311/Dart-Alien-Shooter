@@ -1,0 +1,4 @@
+name: Projekt_Shooter
+description: A sample web application
+dependencies:
+  browser: any
