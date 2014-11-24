@@ -30,7 +30,7 @@ class PlayerChar {
 
 	PlayerChar (num this.x, num this.y) {
 		this.img = this.upImg;
-		rec = new Rectangle(x,y,img.width,img.height);
+		rec = new Rectangle(this.x, this.y, this.img.width, this.img.height);
 	}
 
 	void update() {
