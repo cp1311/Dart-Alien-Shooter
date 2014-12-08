@@ -23,11 +23,7 @@ void startGame(MouseEvent event) {
 void initGame() {
 	final CanvasElement canvas = querySelector("#game");
 	canvas.classes.remove("hidden");
-	canvas.onClick.listen( (Event e) {
-		canvas.requestPointerLock();
-	});
 	final CanvasRenderingContext2D stage = canvas.getContext("2d");
-	document.onPointerLockChange.listen(pointerLockChange);
 
 	gCore = new GameCore(stage);
 	final Timer clock = new Timer.periodic(new Duration(milliseconds:8), gameTick);
@@ -35,16 +31,16 @@ void initGame() {
 
 	window.onKeyUp.listen( (KeyboardEvent e) {
 		if ((e.keyCode == 37) || (e.keyCode == 65)) {
-			gCore.player.moveLeft = false;
+			gCore.player.left = false;
 		}
 		if ((e.keyCode == 39) || (e.keyCode == 68)) {
-			gCore.player.moveRight = false;
+			gCore.player.right = false;
 		}
 		if ((e.keyCode == 38) || (e.keyCode == 87)) {
-			gCore.player.moveUp = false;
+			gCore.player.up = false;
 		}
 		if ((e.keyCode == 40) || (e.keyCode == 83)) {
-			gCore.player.moveDown = false;
+			gCore.player.down = false;
 		}
 		if (e.keyCode == 32) {
 			gCore.player.shoot = false;
@@ -53,39 +49,33 @@ void initGame() {
 
 	window.onKeyDown.listen( (KeyboardEvent e) {
 		if ((e.keyCode == 37) || (e.keyCode == 65)) {
-			gCore.player.moveLeft = true;
+			gCore.player.right = false;
+			gCore.player.up = false;
+			gCore.player.down = false;
+			gCore.player.left = true;
 		}
 		if ((e.keyCode == 39) || (e.keyCode == 68)) {
-			gCore.player.moveRight = true;
+			gCore.player.left = false;
+			gCore.player.up = false;
+			gCore.player.down = false;
+			gCore.player.right = true;
 		}
 		if ((e.keyCode == 38) || (e.keyCode == 87)) {
-			gCore.player.moveUp = true;
+			gCore.player.left = false;
+			gCore.player.right = false;
+			gCore.player.down = false;
+			gCore.player.up = true;
 		}
 		if ((e.keyCode == 40) || (e.keyCode == 83)) {
-			gCore.player.moveDown = true;
+			gCore.player.left = false;
+			gCore.player.right = false;
+			gCore.player.up = false;
+			gCore.player.down = true;
 		}
 		if (e.keyCode == 32) {
 			gCore.player.shoot = true;
 		}
 	});
-
-	document.onMouseMove.listen(mouseMove);
-}
-
-
-void mouseMove(MouseEvent event) {
-	if (!mouselocked) {
-		return;
-	}
-}
-
-bool get pointerLocked => querySelector("#game") == document.pointerLockElement;
-
-void pointerLockChange(Event e) {
-	mouselocked = pointerLocked;
-	if (!mouselocked) {
-		gCore.pause();
-	}
 }
 
 void gameTick(Timer clock) {

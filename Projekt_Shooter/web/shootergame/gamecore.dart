@@ -2,7 +2,8 @@ part of gameengine;
 
 class GameCore {
 	final CanvasRenderingContext2D stage;
-	final PlayerChar player = new PlayerChar(512, 700);
+	Level level;
+	PlayerCharacter player;
 	int width;
 	int height;
 
@@ -11,21 +12,26 @@ class GameCore {
 		this.height = height;
 		stage.fillStyle = "#000000";
 		stage.fillRect(0, 0, this.width, this.height);
+
+		this.level = new Level();
+		this.player = new PlayerCharacter(this.level.start.x, this.level.start.y);
 	}
 
 	void update() {
-		player.update();
+		this.level.update();
+		this.player.update();
 	}
 
 	void draw() {
 		stage.fillStyle = "#000000";
 		stage.fillRect(0, 0, this.width, this.height);
 		drawBackground();
-		stage.drawImage(player.img, player.x, player.y);
+		this.level.draw(stage);
+		this.player.draw(stage);
 	}
 
 	void pause() {
-
+		//TODO: Pause game
 	}
 
 	void drawBackground() {
