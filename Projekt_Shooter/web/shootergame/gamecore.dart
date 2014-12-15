@@ -26,8 +26,15 @@ class GameCore {
 		stage.fillStyle = "#000000";
 		stage.fillRect(0, 0, this.width, this.height);
 		drawBackground();
-		this.level.draw(stage);
-		this.player.draw(stage);
+		for (var i = 0; i < this.level.entities["static"].length; i++) {
+			Entity e = this.level.entities["static"][i];
+			this.stage.drawImage(e.img, e.x, e.y);
+		}
+		for (var i = 0; i < this.level.entities["dynamic"].length; i++) {
+			Entity e = this.level.entities["dynamic"][i];
+			this.stage.drawImage(e.img, e.x, e.y);
+		}
+		this.stage.drawImage(this.player.img, this.player.x, this.player.y);
 	}
 
 	void pause() {

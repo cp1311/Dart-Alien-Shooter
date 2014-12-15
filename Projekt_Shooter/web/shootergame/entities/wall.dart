@@ -8,7 +8,7 @@ class Wall extends Entity {
 
 	num walltype;
 
-	Wall(num x, num y, { num walltype : 0 }) : super(x, y, img : wallimages[walltype]) {
+	Wall(num x, num y, { num walltype : 0 }) : super(x, y, 64, 64, img : wallimages[walltype]) {
 		this.walltype = walltype;
 	}
 

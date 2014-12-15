@@ -69,10 +69,6 @@ class Level {
 		//TODO: Run through all entities in level and update each
 	}
 
-	void draw( CanvasRenderingContext2D stage ) {
-		//TODO: Run through all entities in level and draw then onto the stage
-	}
-
 	void load( String levelname /* filename? levelnumber? */ ) {
 		if (levelname == "test") {
 			this.structure = testlevel;

@@ -7,7 +7,7 @@ class Bullet extends Entity {
 	num velocity = 10;
 	Entity owner;
 
-	Bullet (num x, num y, Entity this.owner, { num this.velocity }) : super (x, y, img : bulletImage) {
+	Bullet (num x, num y, Entity this.owner, { num this.velocity }) : super (x, y, 8, 8, img : bulletImage) {
 
 	}
 

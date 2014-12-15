@@ -34,7 +34,7 @@ class PlayerCharacter extends CharacterEntity {
 	num score = 0;
 	bool shoot = false;
 
-	PlayerCharacter (num x, num y) : super (x, y) {
+	PlayerCharacter (num x, num y) : super (x, y, 48, 48) {
 		this.animations = images;
 		this.lives = 3;
 		this.health = 100;

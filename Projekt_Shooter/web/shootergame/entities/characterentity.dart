@@ -12,7 +12,7 @@ abstract class CharacterEntity extends Entity {
 	num step = 0;
 	String heading = "up";
 
-	CharacterEntity (num x, num y, { Map<String, Map<num, ImageElement>> this.animations }) : super (x, y) {
+	CharacterEntity (num x, num y, num width, num height, { Map<String, Map<num, ImageElement>> this.animations }) : super (x, y, width, height) {
 		if (this.animations != null) {
 			this.setImage( this.animations["up"][1] );
 		}
@@ -79,17 +79,17 @@ abstract class CharacterEntity extends Entity {
 		}
 		this.setImage( animations[this.heading][this.step] );
 
-		if (this.x > (994 - this.img.width)) {
-			this.x = (994 - this.img.width);
+		if (this.x > (1023 - this.img.width)) {
+			this.x = (1023 - this.img.width);
 		}
-		if (this.x < 30) {
-			this.x = 30;
+		if (this.x < 1) {
+			this.x = 1;
 		}
-		if (this.y > (738 - this.img.width)) {
-			this.y = (738 - this.img.width);
+		if (this.y > (767 - this.img.width)) {
+			this.y = (767 - this.img.width);
 		}
-		if (this.y < 30) {
-			this.y = 30;
+		if (this.y < 1) {
+			this.y = 1;
 		}
 	}
 

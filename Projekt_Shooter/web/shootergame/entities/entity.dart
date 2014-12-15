@@ -8,23 +8,29 @@ abstract class Entity {
 	num height;
 	Rectangle rec = new Rectangle(0, 0, 0, 0);
 
-	Entity (num this.x, num this.y, { ImageElement img }) {
+	Entity (num x, num y, num width, num height, { ImageElement img }) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 		if (img != null) {
 			this.setImage( img );
+		}
+		num dx = 64 - width;
+		num dy = 64 - height;
+		if (dx > 1) {
+			this.x += (dx/2).floor();
+		}
+		if (dy > 1) {
+			this.y += (dy/2).floor();
 		}
 	}
 
 	void setImage( ImageElement image ) {
 		if (image != null) {
 			this.img = image;
-			this.width = this.img.width;
-			this.height = this.img.height;
 			this.rec = new Rectangle(this.x, this.y, this.width, this.height);
 		}
-	}
-
-	void draw( CanvasRenderingContext2D stage ) {
-		stage.drawImage(this.img, this.x, this.y);
 	}
 
 	bool intersects( Entity e ) {
