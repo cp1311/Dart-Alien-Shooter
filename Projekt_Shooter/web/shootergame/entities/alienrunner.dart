@@ -1,8 +1,13 @@
 part of gameentities;
 
+/**
+ * AlienRunner
+ *
+ * An alien that runs towards the player and tries to hit and kill him once it sees him
+ */
 class AlienRunner extends AlienCharacter {
 
-	bool hitEnemy = false;
+	bool hitEnemy = false; // is this Alien hitting someone?
 
 	AlienRunner (num x, num y, {String color : "green"}) : super (x, y, "runner", color) {
 		this.lives = 1;

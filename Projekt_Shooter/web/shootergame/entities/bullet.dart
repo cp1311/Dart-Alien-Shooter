@@ -1,17 +1,21 @@
 part of gameentities;
 
+/**
+ * Bullet
+ *
+ * A bullet fired by a character
+ */
 class Bullet extends Entity {
+	num heading = 0; // the heading of the bullet in degrees
+	num velocity = 10; // the speed of the bullet
+	Entity owner; // the entitiy that fired the bullet
 
-	static final bulletImage = new ImageElement(src:"shootergame/images/bullet.png");
-	num heading = 1;
-	num velocity = 10;
-	Entity owner;
-
-	Bullet (num x, num y, Entity this.owner, { num this.velocity }) : super (x, y, 8, 8, img : bulletImage) {
-
+	Bullet (num x, num y, Entity this.owner, { num this.velocity, bool animated : true }) : super (x, y, 8, 8, animated : animated) {
+		// ...
 	}
 
 	void update() {
+		//TODO: hit someone or something ...
 		this.move();
 	}
 

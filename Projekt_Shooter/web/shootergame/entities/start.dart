@@ -1,11 +1,14 @@
 part of gameentities;
 
-
+/**
+ * Start
+ *
+ * the starting field of the game
+ */
 class Start extends Entity {
-	static final ImageElement startimage = new ImageElement(src:"shootergame/images/start.png");
 
-	Start(num x, num y) : super(x, y, 48, 48, img : startimage) {
-
+	Start(num x, num y, { bool animated : true }) : super(x, y, 64, 64, animated : animated) {
+		// ...
 	}
 
 	void update() {

@@ -1,10 +1,15 @@
 part of gameentities;
 
+/**
+ * AlienShooter
+ *
+ * An alien that shoots at the player as soon as it can see him
+ */
 class AlienShooter extends AlienCharacter {
 
 	num bullets = 1;
 	num shotsFired = 0;
-	bool shoot = false;
+	bool shoot = false; // is the alien shooting at someone?
 
 	AlienShooter (num x, num y, {String color : "green"}) : super (x, y, "shooter", color) {
 		this.lives = 1;

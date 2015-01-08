@@ -1,38 +1,42 @@
 part of gameentities;
 
+/**
+ * AlienCharacter
+ *
+ * Baseclass for all Aliens in the game
+ */
 abstract class AlienCharacter extends CharacterEntity {
+	String color; // the color of the alien
+	String type; // the type of the alien
 
-	String color;
-	String type;
-
-	AlienCharacter (num x, num y, String this.type, String this.color) : super (x, y, 48, 48) {
-		Map<String, Map<num, ImageElement>> images = {
-    		"up" : {},
-    		"down" : {},
-    		"left" : {},
-    		"right" : {},
-    		"die" : {}
-    	};
-		images.forEach((k,v) => initImageMap(k,v));
-		this.animations = images;
-		this.setImage(this.animations["up"][0]);
+	/**
+	 * AlienCharacter Constructor
+	 *
+	 * [x] x coordinate
+	 * [y] y coordinate
+	 * [type] the type of the alien
+	 * [color] the color of the alien
+	 * [animated] is the entity animated or static?
+	 */
+	AlienCharacter (num x, num y, String this.type, String this.color, { bool animated : true }) : super (x, y, 48, 48, animated : animated) {
+		// ...
 	}
 
-	void canSee( Entity e ) {
+	/**
+	 * canSee
+	 *
+	 * can this alien see [e]?
+	 *
+	 * returns true if the alien can see [e], false if not
+	 */
+	bool canSee( Entity e ) {
 		//TODO: Check if the alien can see the specified entity
+		return false;
 	}
 
-	Map<num, ImageElement> initImageMap(String key, Map<num, ImageElement> elem) {
-		for (var i = 0; i <= 2; i++) {
-			elem[i] = new ImageElement(src:"shootergame/images/alien/${this.type}/${this.color}/$key/$i.png");
-		}
-		return elem;
-	}
+	void die(); // abstract
 
-	void die();
+	void attack( Entity e );  // abstract
 
-	void attack( Entity e );
-
-	void hit( num damage );
-
+	void hit( num damage );  // abstract
 }

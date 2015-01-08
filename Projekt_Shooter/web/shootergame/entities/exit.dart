@@ -1,11 +1,14 @@
 part of gameentities;
 
-
+/**
+ * Exit
+ *
+ * The goal of the level
+ */
 class Exit extends Entity {
-	static final ImageElement exitimage = new ImageElement(src:"shootergame/images/exit.png");
 
-	Exit(num x, num y) : super(x, y, 48, 48, img : exitimage) {
-
+	Exit(num x, num y, { bool animated : true }) : super(x, y, 64, 64, animated : animated) {
+		// ...
 	}
 
 	void update() {

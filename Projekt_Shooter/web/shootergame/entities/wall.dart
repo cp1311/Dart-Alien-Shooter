@@ -1,14 +1,14 @@
 part of gameentities;
 
-
+/**
+ * Wall
+ *
+ * a piece of wall in the game
+ */
 class Wall extends Entity {
-	static final Map<int, ImageElement> wallimages = {
-		0 : new ImageElement(src:"shootergame/images/wall/defaultWall.png"),
-	};
-
 	num walltype;
 
-	Wall(num x, num y, { num walltype : 0 }) : super(x, y, 64, 64, img : wallimages[walltype]) {
+	Wall(num x, num y, { num walltype : 0 }) : super(x, y, 64, 64) {
 		this.walltype = walltype;
 	}
 

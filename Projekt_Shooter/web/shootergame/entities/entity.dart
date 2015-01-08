@@ -1,21 +1,29 @@
 part of gameentities;
 
+/**
+ * Entity
+ *
+ * Baseclass for all entities in the game
+ */
 abstract class Entity {
-	ImageElement img = new ImageElement(src:"shootergame/images/empty.png");
-	num x;
-	num y;
+	num x; // x coordinate of the entity in the game world
+	num y; // y coordinate
 	num width;
 	num height;
-	Rectangle rec = new Rectangle(0, 0, 0, 0);
+	num animationStep = 0; // the curent step in the animation(-cycle)
+	bool animated; // determines if this entity is animated or static
+	Rectangle rec = new Rectangle(0, 0, 0, 0); // the rectangle representing the entity in the gameworld
 
-	Entity (num x, num y, num width, num height, { ImageElement img }) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		if (img != null) {
-			this.setImage( img );
-		}
+	/**
+	 * Entity Constructor
+	 *
+	 * [x] x coordinate
+	 * [y] y coordinate
+	 * [width] entity-width
+	 * [height] entity-height
+	 * [animated] is the entity animated or static?
+	 */
+	Entity (num this.x, num this.y, num this.width, num this.height, { bool this.animated : false }) {
 		num dx = 64 - width;
 		num dy = 64 - height;
 		if (dx > 1) {
@@ -26,17 +34,16 @@ abstract class Entity {
 		}
 	}
 
-	void setImage( ImageElement image ) {
-		if (image != null) {
-			this.img = image;
-			this.rec = new Rectangle(this.x, this.y, this.width, this.height);
-		}
-	}
-
+	/**
+	 * intersects
+	 *
+	 * determines if [this.rec] intersects with [e.rec]
+	 * returns true if they intersect, false if not.
+	 */
 	bool intersects( Entity e ) {
 		//TODO: detect intersetcion
 		return false;
 	}
 
-	void update();
+	void update(); // abstract
 }
