@@ -57,9 +57,9 @@ class GameCore {
 	void update() {
 		final Level level = this.gamelevels[activeLevel]; // get the active Level
 
-		player.update(); // update the player
+		level.update( this.player ); // update all entities in the level
 
-		level.update(); // update all entities in the level
+		this.player.update(); // update the player
 	}
 
 	/**
@@ -72,7 +72,6 @@ class GameCore {
 		this.stage.fillRect(0, 0, this.width, this.height);
 
 		final Level level = this.gamelevels[activeLevel]; // get the active level
-
 
 		final ImageElement bgImg = new ImageElement(src: level.settings["floorPath"] + "defaultFloor.png"); // get the floor image
 		if ( (bgImg.width != 0) && (bgImg.height != 0) ) { // draw the floor
@@ -114,9 +113,9 @@ class GameCore {
 		});
 
 		// at last draw the player on the stage
-		final String imagename = "" + (player.animated ? player.animationStep.toString() : "0") + ".png";
-		final ImageElement img = new ImageElement(src: level.settings["playerPath"] + "/" + player.heading + "/" + imagename);
-		this.stage.drawImage(img , player.x, player.y);
+		final String imagename = "" + (this.player.animated ? this.player.animationStep.toString() : "0") + ".png";
+		final ImageElement img = new ImageElement(src: level.settings["playerPath"] + this.player.heading + "/" + imagename);
+		this.stage.drawImage(img , this.player.x, this.player.y);
 	}
 
 	/**
@@ -136,7 +135,8 @@ class GameCore {
 	void loadNextLevel() {
 		this.activeLevel++;
 		this.gamelevels[activeLevel].init(); // initialize the new level
-		this.player = new PlayerCharacter(this.gamelevels[activeLevel].start.x, this.gamelevels[activeLevel].start.y); // place the player on start
+		this.player.x = this.gamelevels[activeLevel].start.x;
+		this.player.y = this.gamelevels[activeLevel].start.y; // place the player on start
 	}
 
 	/**

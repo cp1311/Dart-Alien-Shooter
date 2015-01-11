@@ -15,6 +15,10 @@ abstract class CharacterEntity extends Entity {
 	bool down = false; // .. down?
 	bool left = false; // .. left?
 	bool right = false; // .. right?
+	bool pathBlockedUp = false; // is the character running into something solid?
+	bool pathBlockedDown = false;
+	bool pathBlockedLeft = false;
+	bool pathBlockedRight = false;
 	String heading = "up"; // which way is the character facing?
 
 	/**
@@ -37,6 +41,10 @@ abstract class CharacterEntity extends Entity {
 	 */
 	void update() {
 		this.move(); // check for any movement and update the coordinates accordingly
+		bool pathBlockedUp = false;
+    	bool pathBlockedDown = false;
+    	bool pathBlockedLeft = false;
+    	bool pathBlockedRight = false;
 	}
 
 	/**
@@ -51,25 +59,26 @@ abstract class CharacterEntity extends Entity {
     	final bool moving = this.right || this.left || this.up || this.down; // is the character moving at all?
 
     	if (moving) {
+    		this.animationTimer.start();
 			// Position update
-			if (this.right) {
+			if (this.right && !this.pathBlockedRight) {
 				moveX += 1;
 			}
-			if (this.left) {
+			if (this.left && !this.pathBlockedLeft) {
 				moveX -= 1;
 			}
-			if (this.up) {
+			if (this.up && !this.pathBlockedUp) {
 				moveY -= 1;
 			}
-			if (this.down) {
+			if (this.down && !this.pathBlockedDown) {
 				moveY += 1;
 			}
-			if (moveX != 0) {
-				this.x += moveX;
-			}
-			if (moveY != 0) {
-				this.y += moveY;
-			}
+			this.x += moveX;
+			this.y += moveY;
+    	} else {
+    		if (this.animationTimer.isRunning) {
+    			this.animationTimer..stop()..reset();
+    		}
     	}
 
 		// Select heading for current direction and step
@@ -97,8 +106,12 @@ abstract class CharacterEntity extends Entity {
 
 		// if heading did not change: set next step in animation
 		if ( moving && (this.heading == newHeading) ) {
-			this.animationStep = (this.animationStep == 1) ? 2 : 1;
+			if (this.animationTimer.elapsedMilliseconds >= 150) {
+				this.animationStep = (this.animationStep == 1) ? 2 : 1;
+				this.animationTimer.reset();
+			}
 		} else {
+			this.animationTimer.reset();
 			this.heading = newHeading;
 			this.animationStep = 0;
 		}
@@ -116,6 +129,7 @@ abstract class CharacterEntity extends Entity {
 		if (this.y < 1) {
 			this.y = 1;
 		}
+		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
 	}
 
 	/**

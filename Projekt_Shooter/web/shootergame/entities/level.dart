@@ -87,8 +87,37 @@ class Level {
 	 *
 	 * update all entities in the level
 	 */
-	void update() {
+	void update( PlayerCharacter player ) {
+		player.pathBlockedUp = false;
+		player.pathBlockedDown = false;
+		player.pathBlockedLeft = false;
+		player.pathBlockedRight = false;
 		this.entities.forEach( (Entity e) {
+			if (player.intersects(e)) {
+				if (e is Wall) {
+					final Rectangle col = e.rec.intersection(player.rec);
+
+					final Rectangle l = new Rectangle(player.rec.left, player.rec.top, 0, player.rec.height);
+					final Rectangle r = new Rectangle(player.rec.left+player.rec.width, player.rec.top, 0, player.rec.height);
+					final Rectangle t = new Rectangle(player.rec.left, player.rec.top, player.rec.width, 0);
+					final Rectangle b = new Rectangle(player.rec.left, player.rec.top+player.rec.height, player.rec.width, 0);
+
+					final Rectangle lInter = col.intersection(l);
+					final Rectangle rInter = col.intersection(r);
+					final Rectangle tInter = col.intersection(t);
+					final Rectangle bInter = col.intersection(b);
+
+					final num lSize = (lInter != null) ? lInter.height : 0;
+					final num rSize = (rInter != null) ? rInter.height : 0;
+					final num tSize = (tInter != null) ? tInter.width : 0;
+					final num bSize = (bInter != null) ? bInter.width : 0;
+
+					player.pathBlockedUp = player.pathBlockedUp || (tSize > 0) && (tSize >= rSize) && (tSize >= lSize);
+					player.pathBlockedDown = player.pathBlockedDown || (bSize > 0) && (bSize >= rSize) && (bSize >= lSize);
+					player.pathBlockedLeft = player.pathBlockedLeft || (lSize > 0) && (lSize >= tSize) && (lSize >= bSize);
+					player.pathBlockedRight = player.pathBlockedRight || (rSize > 0) && (rSize >= tSize) && (rSize >= bSize);
+				}
+			}
 			e.update();
 		});
 	}

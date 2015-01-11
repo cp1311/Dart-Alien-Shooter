@@ -29,7 +29,7 @@ class PlayerCharacter extends CharacterEntity {
 	 * update the player
 	 */
 	void update() {
-		this.move(); // check for movement and update the players position and heading
+		super.update(); // check for movement and update the players position and heading
 		if (this.shoot) {
 			//TODO: Shoot a new bullet
 		}
