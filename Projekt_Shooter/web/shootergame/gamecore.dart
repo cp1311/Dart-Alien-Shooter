@@ -46,6 +46,7 @@ class GameCore {
 			this.gamelevels = gamelevels;
 		}
 		this.gamelevels[activeLevel].init(); // initialize the active (first) level
+		this.loadLevelContents();
 		this.player = new PlayerCharacter(this.gamelevels[activeLevel].start.x, this.gamelevels[activeLevel].start.y); // place the player on start
 	}
 
@@ -58,8 +59,6 @@ class GameCore {
 		final Level level = this.gamelevels[activeLevel]; // get the active Level
 
 		level.update( this.player ); // update all entities in the level
-
-		this.player.update(); // update the player
 	}
 
 	/**
@@ -88,34 +87,74 @@ class GameCore {
 			if (e is Wall) { // typecheck
 				final String imagename = "" + (e.animated ? e.animationStep.toString() : "defaultWall") + ".png"; // generate imagename
 				final ImageElement img = new ImageElement(src: level.settings["wallPath"] + imagename); // set up ImageElement
-				this.stage.drawImage(img , e.x, e.y); // paint to the stage
+				final dx = e.getCenter().x - ( e.width ~/ 2 );
+				final dy = e.getCenter().y - ( e.height ~/ 2 );
+				this.stage.drawImage(img , dx, dy); // paint to the stage
 			}
 			if (e is Exit) {
 				final String imagename = "" + (e.animated ? e.animationStep.toString() : "0") + ".png";
 				final ImageElement img = new ImageElement(src: level.settings["exitPath"] + imagename);
-				this.stage.drawImage(img , e.x, e.y);
+				final dx = e.getCenter().x - ( e.width ~/ 2 );
+				final dy = e.getCenter().y - ( e.height ~/ 2 );
+				this.stage.drawImage(img , dx, dy);
 			}
 			if (e is Start) {
 				final String imagename = "" + (e.animated ? e.animationStep.toString() : "0") + ".png";
 				final ImageElement img = new ImageElement(src: level.settings["startPath"] + imagename);
-				this.stage.drawImage(img , e.x, e.y);
+				final dx = e.getCenter().x - ( e.width ~/ 2 );
+				final dy = e.getCenter().y - ( e.height ~/ 2 );
+				this.stage.drawImage(img , dx, dy);
 			}
-			if (e is AlienRunner) {
-				final String imagename = "" + (e.animated ? e.animationStep.toString() : "0") + ".png";
-				final ImageElement img = new ImageElement(src: level.settings["alienPath"] + e.type + "/" + e.color + "/" + e.heading + "/" + imagename);
-				this.stage.drawImage(img , e.x, e.y);
+			if (e is AlienCharacter) {
+				if (e.isAlive()) {
+					final String imagename = "" + (e.animated ? e.animationStep.toString() : "0") + ".png";
+					final ImageElement img = new ImageElement(src: level.settings["alienPath"] + e.type + "/" + e.color + "/" + e.heading + "/" + imagename);
+					final dx = e.getCenter().x - ( e.width ~/ 2 );
+					final dy = e.getCenter().y - ( e.height ~/ 2 );
+					this.stage.drawImage(img , dx, dy);
+				} else {
+					final String imagename = "" + (e.animated ? e.animationStep.toString() : "0") + ".png";
+					final ImageElement img = new ImageElement(src: level.settings["alienPath"] + e.type + "/" + e.color + "/die/" + imagename);
+					final dx = e.getCenter().x - ( e.width ~/ 2 );
+					final dy = e.getCenter().y - ( e.height ~/ 2 );
+					this.stage.drawImage(img , dx, dy);
+				}
 			}
-			if (e is AlienShooter) {
+			if (e is Bullet) {
 				final String imagename = "" + (e.animated ? e.animationStep.toString() : "0") + ".png";
-				final ImageElement img = new ImageElement(src: level.settings["alienPath"] + e.type + "/" + e.color + "/" + e.heading + "/" + imagename);
-				this.stage.drawImage(img , e.x, e.y);
+				final ImageElement img = new ImageElement(src: level.settings["bulletPath"] + e.heading + "/" + imagename);
+				final dx = e.getCenter().x - ( e.width ~/ 2 );
+				final dy = e.getCenter().y - ( e.height ~/ 2 );
+				this.stage.drawImage(img , dx, dy);
+			}
+			if (e is muzzleFlash) {
+				final String imagename = "" + (e.animated ? e.animationStep.toString() : "0") + ".png";
+				final ImageElement img = new ImageElement(src: level.settings["muzzleFlashPath"] + e.heading + "/" + imagename);
+				final dx = e.getCenter().x - ( e.width ~/ 2 );
+				final dy = e.getCenter().y - ( e.height ~/ 2 );
+				this.stage.drawImage(img , dx, dy);
 			}
 		});
 
 		// at last draw the player on the stage
-		final String imagename = "" + (this.player.animated ? this.player.animationStep.toString() : "0") + ".png";
-		final ImageElement img = new ImageElement(src: level.settings["playerPath"] + this.player.heading + "/" + imagename);
-		this.stage.drawImage(img , this.player.x, this.player.y);
+		final String playerimgname = "" + (this.player.animated ? this.player.animationStep.toString() : "0") + ".png";
+		final ImageElement playerimg = new ImageElement(src: level.settings["playerPath"] + this.player.heading + "/" + playerimgname);
+		final ImageElement visrangeimg = new ImageElement(src: level.settings["environmentPath"] + "visRange.png");
+		final ImageElement shadowimg = new ImageElement(src: level.settings["environmentPath"]  + "shadow.png");
+
+		this.stage.drawImage(playerimg , this.player.x, this.player.y);
+		final num visrangeX = (this.player.getCenter().x - (this.player.visRange ~/ 2));
+		final num visrangeY = (this.player.getCenter().y - (this.player.visRange ~/ 2));
+		this.stage.drawImageScaled( visrangeimg,
+									visrangeX,
+									visrangeY,
+									player.visRange.toInt(),
+									player.visRange.toInt()
+								);
+		this.stage.fillRect(0, 0, visrangeX, this.height );
+		this.stage.fillRect(visrangeX + player.visRange.toInt(), 0, this.width - visrangeX - player.visRange.toInt(), this.height );
+		this.stage.fillRect(0, 0, this.width, visrangeY );
+		this.stage.fillRect(0, visrangeY + player.visRange.toInt(), this.width, this.height - visrangeY - player.visRange.toInt() );
 	}
 
 	/**
@@ -135,8 +174,20 @@ class GameCore {
 	void loadNextLevel() {
 		this.activeLevel++;
 		this.gamelevels[activeLevel].init(); // initialize the new level
+		this.loadLevelContents();
 		this.player.x = this.gamelevels[activeLevel].start.x;
 		this.player.y = this.gamelevels[activeLevel].start.y; // place the player on start
+	}
+
+	/**
+	 * loadLevelContents
+	 *
+	 * Preload Resources for Level
+	 */
+	void loadLevelContents() {
+		//TODO: Load Level Contents
+		//TODO: Display Loading Screen?
+
 	}
 
 	/**

@@ -6,12 +6,45 @@ part of gameentities;
  * A bullet fired by a character
  */
 class Bullet extends Entity {
-	num heading = 0; // the heading of the bullet in degrees
-	num velocity = 10; // the speed of the bullet
-	Entity owner; // the entitiy that fired the bullet
+	num direction; // the direction of the bullet in degrees
+	num velocity; // the speed of the bullet
+	CharacterEntity owner; // the entitiy that fired the bullet
+	String heading; // which way is the character facing?
 
-	Bullet (num x, num y, Entity this.owner, { num this.velocity, bool animated : true }) : super (x, y, 8, 8, animated : animated) {
-		// ...
+	Bullet (num x, num y, CharacterEntity this.owner, { num this.direction, num this.velocity : 4, bool animated : false }) : super (x, y, 4, 4, animated : animated) {
+		this.x = this.x - this.width ~/ 2;
+		this.y = this.y - this.width ~/ 2;
+		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
+		if (this.direction == null) {
+			this.heading = owner.heading;
+			switch (this.heading) {
+				case "up" : {
+					this.direction = 0;
+				} break;
+				case "right" : {
+					this.direction = 90;
+				} break;
+				case "down" : {
+					this.direction = 180;
+				} break;
+				case "left" : {
+					this.direction = 270;
+				} break;
+				default: {
+					// ...
+				}
+			}
+		} else {
+			if ( (this.direction > 45) && (this.direction <= 135) ) {
+	        	this.heading = "right";
+			} else if ( (this.direction > 135) && (this.direction <= 225) ) {
+	        	this.heading = "down";
+			} else if ( (this.direction > 225) && (this.direction <= 315) ) {
+	        	this.heading = "left";
+			} else {
+	        	this.heading = "up";
+			}
+		}
 	}
 
 	void update() {
@@ -21,10 +54,32 @@ class Bullet extends Entity {
 
 	void die() {
 		//TODO: Animate death of this bullet
+		ArmedCharacter a = this.owner as ArmedCharacter;
+		a.addBullets(1);
+		a.addShotToFire();
+		this.alive = false;
 	}
 
 	void move() {
-		//TODO: Move the bullet along its path (heading) according its velocity
+		//TODO: Move the bullet along its trajectory (heading) according its velocity
+		switch (this.heading) {
+			case "up" : {
+				this.y -= this.velocity;
+			} break;
+			case "right" : {
+				this.x += this.velocity;
+			} break;
+			case "down" : {
+				this.y += this.velocity;
+			} break;
+			case "left" : {
+				this.x -= this.velocity;
+			} break;
+			default : {
+				 //...
+			}
+		}
+		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
 	}
 
 }

@@ -7,7 +7,7 @@ part of gameentities;
  */
 class Start extends Entity {
 
-	Start(num x, num y, { bool animated : true }) : super(x, y, 64, 64, animated : animated) {
+	Start(num x, num y, { bool animated : true }) : super(x, y, 64, 64, animated : animated, centerInGrid : true) {
 		this.animationTimer.start();
 	}
 

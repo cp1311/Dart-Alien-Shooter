@@ -12,5 +12,7 @@ part 'alien.dart';
 part 'alienshooter.dart';
 part 'alienrunner.dart';
 part 'bullet.dart';
+part 'muzzleFlash.dart';
 part 'exit.dart';
 part 'start.dart';
+part 'armedcharacter.dart';

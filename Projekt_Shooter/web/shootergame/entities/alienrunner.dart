@@ -6,7 +6,7 @@ part of gameentities;
  * An alien that runs towards the player and tries to hit and kill him once it sees him
  */
 class AlienRunner extends AlienCharacter {
-
+	bool isRunning = false; // is the Alien currently moving?
 	bool hitEnemy = false; // is this Alien hitting someone?
 
 	AlienRunner (num x, num y, {String color : "green"}) : super (x, y, "runner", color) {
@@ -15,14 +15,27 @@ class AlienRunner extends AlienCharacter {
 	}
 
 	void update() {
-		this.move();
-		if (this.hitEnemy) {
-			//TODO: Hit the enemy target
+		if (this.isAlive()) {
+			this.move();
+			if (this.hitEnemy) {
+				//TODO: Hit the enemy target
+			}
+		} else {
+			//TODO: automate animationstep count detection
+			if (this.animationStep < 3) {
+    			if (this.animationTimer.elapsedMilliseconds >= this.animationInterval) {
+        			this.animationStep++;
+        			this.animationTimer.reset();
+    			}
+    		}
 		}
 	}
 
 	void die() {
 		//TODO: Animate death of this alien
+		this.dieing = true;
+		this.animationStep = 0;
+		this.animationTimer.start();
 	}
 
 	void hit( num damage ) {

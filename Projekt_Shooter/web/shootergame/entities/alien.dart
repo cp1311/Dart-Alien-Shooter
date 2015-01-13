@@ -23,6 +23,13 @@ abstract class AlienCharacter extends CharacterEntity {
 	}
 
 	/**
+	 * AlienCharacter Constructor
+	 *
+	 * To be called with ArmedCharacter
+	 */
+	AlienCharacter.fromArmedChar (num x, num y, String type, String color, bool animated ) : this(x, y, type, color, animated : animated);
+
+	/**
 	 * canSee
 	 *
 	 * can this alien see [e]?
@@ -30,8 +37,9 @@ abstract class AlienCharacter extends CharacterEntity {
 	 * returns true if the alien can see [e], false if not
 	 */
 	bool canSee( Entity e ) {
-		//TODO: Check if the alien can see the specified entity
-		return false;
+		final Point c = this.getCenter();
+		final Point d = e.getCenter();
+		return ( sqrt( pow( (c.x-d.x), 2 ) + pow( (c.y-d.y), 2 ) ) >= this.visRange );
 	}
 
 	void die(); // abstract
@@ -40,3 +48,4 @@ abstract class AlienCharacter extends CharacterEntity {
 
 	void hit( num damage );  // abstract
 }
+

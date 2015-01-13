@@ -8,7 +8,7 @@ part of gameentities;
  * Baseclass for all characters in the game
  */
 abstract class CharacterEntity extends Entity {
-	double visRange; // the visible range for this character
+	double visRange = 200.0; // the visible range for this character
 	num lives; // how many times can this character die
 	num health; // how many hitpoints are left
 	bool up = false; // is the character moving up?
@@ -19,6 +19,7 @@ abstract class CharacterEntity extends Entity {
 	bool pathBlockedDown = false;
 	bool pathBlockedLeft = false;
 	bool pathBlockedRight = false;
+	bool dieing = false;
 	String heading = "up"; // which way is the character facing?
 
 	/**
@@ -30,9 +31,11 @@ abstract class CharacterEntity extends Entity {
 	 * [height] entity-height
 	 * [animated] is the entity animated or static?
 	 */
-	CharacterEntity (num x, num y, num width, num height, { bool animated : true }) : super (x, y, width, height, animated : animated) {
+	CharacterEntity (num x, num y, num width, num height, { bool animated : true, bool centerInGrid : true }) : super (x, y, width, height, animated : animated, centerInGrid : centerInGrid) {
 		// ...
 	}
+
+	CharacterEntity.fromArmedChar (num x, num y, num width, num height, bool animated, bool centerInGrid) : this(x, y, width, height, animated : animated, centerInGrid : centerInGrid);
 
 	/**
 	 * update
@@ -106,7 +109,7 @@ abstract class CharacterEntity extends Entity {
 
 		// if heading did not change: set next step in animation
 		if ( moving && (this.heading == newHeading) ) {
-			if (this.animationTimer.elapsedMilliseconds >= 150) {
+			if (this.animationTimer.elapsedMilliseconds >= this.animationInterval) {
 				this.animationStep = (this.animationStep == 1) ? 2 : 1;
 				this.animationTimer.reset();
 			}
@@ -116,19 +119,6 @@ abstract class CharacterEntity extends Entity {
 			this.animationStep = 0;
 		}
 
-		// Boundary-check
-		if (this.x > (1023 - this.width)) {
-			this.x = (1023 - this.width);
-		}
-		if (this.x < 1) {
-			this.x = 1;
-		}
-		if (this.y > (767 - this.width)) {
-			this.y = (767 - this.width);
-		}
-		if (this.y < 1) {
-			this.y = 1;
-		}
 		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
 	}
 

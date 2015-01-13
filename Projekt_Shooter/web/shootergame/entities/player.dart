@@ -5,11 +5,11 @@ part of gameentities;
  *
  * Represents the player in the game
  */
-class PlayerCharacter extends CharacterEntity {
-	num bullets = 3;
-	num shotsFired = 0;
+class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	num score = 0;
 	bool shoot = false; // did the player fire?
+	bool shooting = false; // is the player still shooting or can he fire a new bullet?
+	bool firingBullet = false; // is the gun firing?
 
 	/**
 	 * PlayerCharacter Constructor
@@ -18,9 +18,19 @@ class PlayerCharacter extends CharacterEntity {
 	 * [y] y coordinate
 	 * [animated] is the entity animated or static?
 	 */
-	PlayerCharacter (num x, num y, { bool animated : true }) : super (x, y, 48, 48, animated : animated) {
+	PlayerCharacter (num x, num y, { bool animated : true, Point muzzleOffset }) : super.fromArmedChar(x, y, 40, 40, animated, true) {
 		this.lives = 3;
 		this.health = 100;
+		this.bullets = 3;
+		this.shotsFired = 0;
+		this.char = this;
+		this.animationInterval = 150;
+		if (muzzleOffset == null) {
+			this.muzzleOffset = new Point(15, -20);
+		} else {
+			this.muzzleOffset = muzzleOffset;
+		}
+		this.visRange = 280.0;
 	}
 
 	/**
@@ -31,7 +41,13 @@ class PlayerCharacter extends CharacterEntity {
 	void update() {
 		super.update(); // check for movement and update the players position and heading
 		if (this.shoot) {
-			//TODO: Shoot a new bullet
+			if ( (!this.shooting) && (this.bullets > 0) && (this.shotsFired < 5) ) {
+				this.shotsFired++;
+				this.shooting = true;
+				this.firingBullet = true;
+			}
+		} else {
+			this.shooting = false;
 		}
 	}
 

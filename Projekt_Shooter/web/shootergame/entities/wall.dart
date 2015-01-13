@@ -8,7 +8,7 @@ part of gameentities;
 class Wall extends Entity {
 	num walltype;
 
-	Wall(num x, num y, { num walltype : 0 }) : super(x, y, 64, 64) {
+	Wall(num x, num y, { num walltype : 0 }) : super(x, y, 64, 64, centerInGrid : true) {
 		this.walltype = walltype;
 	}
 
