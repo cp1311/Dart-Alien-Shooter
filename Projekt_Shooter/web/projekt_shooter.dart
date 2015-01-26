@@ -38,10 +38,20 @@ void startGame(MouseEvent event) {
  */
 void initGame() {
 	final CanvasElement canvas = querySelector("#game"); // fetch the game-canvas-element
-	canvas.classes.remove("hidden"); // make it visible
+	final TableElement gui = querySelector("#gamegui"); // fetch the game-gui-element
+	final TableCellElement healthgui = querySelector("#health");
+	final TableCellElement levelgui = querySelector("#level");
+	final TableCellElement ammogui = querySelector("#ammo");
+	final TableCellElement scoregui = querySelector("#score");
 	final CanvasRenderingContext2D stage = canvas.getContext("2d"); // retreive the state of the canvas
-
-	gCore = new GameCore(stage); // initialize the gamecore
+	canvas.classes.remove("hidden");
+	gui.classes.remove("hidden");
+	final Map<String,TableCellElement> gamegui = new Map<String,TableCellElement>();
+	gamegui["health"] = healthgui;
+	gamegui["level"] = levelgui;
+	gamegui["ammo"] = ammogui;
+	gamegui["score"] = scoregui;
+	gCore = new GameCore(stage, gamegui); // initialize the gamecore
 	final Timer clock = new Timer.periodic(new Duration(milliseconds:8), gameTick); // set up the gametimer
 	window.animationFrame.then(drawFrame); // start drawing the game to th canvas
 

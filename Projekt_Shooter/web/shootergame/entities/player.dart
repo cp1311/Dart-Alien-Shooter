@@ -7,9 +7,6 @@ part of gameentities;
  */
 class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	num score = 0;
-	bool shoot = false; // did the player fire?
-	bool shooting = false; // is the player still shooting or can he fire a new bullet?
-	bool firingBullet = false; // is the gun firing?
 
 	/**
 	 * PlayerCharacter Constructor
@@ -18,19 +15,19 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	 * [y] y coordinate
 	 * [animated] is the entity animated or static?
 	 */
-	PlayerCharacter (num x, num y, { bool animated : true, Point muzzleOffset }) : super.fromArmedChar(x, y, 40, 40, animated, true) {
+	PlayerCharacter (num x, num y, { Point muzzleOffset }) : super.fromArmedChar(x, y, 40, 40, true) {
 		this.lives = 3;
 		this.health = 100;
-		this.bullets = 3;
+		this.bullets = 10;
 		this.shotsFired = 0;
+		this.maxShootsPerTime = 1;
 		this.char = this;
-		this.animationInterval = 150;
 		if (muzzleOffset == null) {
-			this.muzzleOffset = new Point(15, -20);
+			this.muzzleOffset = new Point(8, -22);
 		} else {
 			this.muzzleOffset = muzzleOffset;
 		}
-		this.visRange = 280.0;
+		this.visRange = 400.0;
 	}
 
 	/**
@@ -41,8 +38,9 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	void update() {
 		super.update(); // check for movement and update the players position and heading
 		if (this.shoot) {
-			if ( (!this.shooting) && (this.bullets > 0) && (this.shotsFired < 5) ) {
+			if ( (!this.shooting) && (this.bullets > 0) && (this.shotsFired < this.maxShootsPerTime) ) {
 				this.shotsFired++;
+				//this.bullets--;  Unendliche Muniton!
 				this.shooting = true;
 				this.firingBullet = true;
 			}
@@ -57,7 +55,7 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	 * add points to the players score
 	 */
 	void addPoints( num points ) {
-		//TODO: Add points to score
+		this.score += points;
 	}
 
 	/**
@@ -67,15 +65,29 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	 */
 	void die() {
 		//TODO: Reset player to start or end game
+		this.lives--;
+		this.action = "die";
 	}
 
 	/**
-	 * reset
+	 * resetTo
 	 *
-	 * reset the player to the start location
+	 * reset the player to the given location
 	 */
-	void reset() {
-		//TODO: Reset the player to the start location
+	void resetTo(num x, num y) {
+		this.x = x;
+		this.y = y;
+		if (this.centerInGrid) {
+			final num dx = 64 - this.width;
+			final num dy = 64 - this.height;
+			if (dx > 1) {
+				this.x += (dx/2).floor();
+			}
+			if (dy > 1) {
+				this.y += (dy/2).floor();
+			}
+		}
+		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
 	}
 
 	/**

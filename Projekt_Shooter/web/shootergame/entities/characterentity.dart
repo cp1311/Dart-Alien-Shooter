@@ -20,7 +20,7 @@ abstract class CharacterEntity extends Entity {
 	bool pathBlockedLeft = false;
 	bool pathBlockedRight = false;
 	bool dieing = false;
-	String heading = "up"; // which way is the character facing?
+	List<Entity> entitiesInSight = new List<Entity>();
 
 	/**
 	 * CharacterEntity Constructor
@@ -31,11 +31,11 @@ abstract class CharacterEntity extends Entity {
 	 * [height] entity-height
 	 * [animated] is the entity animated or static?
 	 */
-	CharacterEntity (num x, num y, num width, num height, { bool animated : true, bool centerInGrid : true }) : super (x, y, width, height, animated : animated, centerInGrid : centerInGrid) {
-		// ...
+	CharacterEntity (num x, num y, num width, num height, { bool centerInGrid : true }) : super (x, y, width, height, centerInGrid : centerInGrid) {
+		this.heading = "up"; // which way is the character facing?
 	}
 
-	CharacterEntity.fromArmedChar (num x, num y, num width, num height, bool animated, bool centerInGrid) : this(x, y, width, height, animated : animated, centerInGrid : centerInGrid);
+	CharacterEntity.fromArmedChar (num x, num y, num width, num height, bool centerInGrid) : this(x, y, width, height, centerInGrid : centerInGrid);
 
 	/**
 	 * update
@@ -62,8 +62,8 @@ abstract class CharacterEntity extends Entity {
     	final bool moving = this.right || this.left || this.up || this.down; // is the character moving at all?
 
     	if (moving) {
-    		this.animationTimer.start();
 			// Position update
+    		this.action = "move";
 			if (this.right && !this.pathBlockedRight) {
 				moveX += 1;
 			}
@@ -79,9 +79,7 @@ abstract class CharacterEntity extends Entity {
 			this.x += moveX;
 			this.y += moveY;
     	} else {
-    		if (this.animationTimer.isRunning) {
-    			this.animationTimer..stop()..reset();
-    		}
+    		this.action = "";
     	}
 
 		// Select heading for current direction and step
@@ -107,17 +105,7 @@ abstract class CharacterEntity extends Entity {
 			newHeading = "right";
 		}
 
-		// if heading did not change: set next step in animation
-		if ( moving && (this.heading == newHeading) ) {
-			if (this.animationTimer.elapsedMilliseconds >= this.animationInterval) {
-				this.animationStep = (this.animationStep == 1) ? 2 : 1;
-				this.animationTimer.reset();
-			}
-		} else {
-			this.animationTimer.reset();
-			this.heading = newHeading;
-			this.animationStep = 0;
-		}
+		this.heading = newHeading;
 
 		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
 	}

@@ -10,8 +10,9 @@ class Bullet extends Entity {
 	num velocity; // the speed of the bullet
 	CharacterEntity owner; // the entitiy that fired the bullet
 	String heading; // which way is the character facing?
+	num hitpoints;
 
-	Bullet (num x, num y, CharacterEntity this.owner, { num this.direction, num this.velocity : 4, bool animated : false }) : super (x, y, 4, 4, animated : animated) {
+	Bullet (num x, num y, CharacterEntity this.owner, { num this.direction, num this.hitpoints : 25, num this.velocity : 4 }) : super (x, y, 4, 4) {
 		this.x = this.x - this.width ~/ 2;
 		this.y = this.y - this.width ~/ 2;
 		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
@@ -48,20 +49,16 @@ class Bullet extends Entity {
 	}
 
 	void update() {
-		//TODO: hit someone or something ...
 		this.move();
 	}
 
 	void die() {
-		//TODO: Animate death of this bullet
 		ArmedCharacter a = this.owner as ArmedCharacter;
-		a.addBullets(1);
 		a.addShotToFire();
 		this.alive = false;
 	}
 
 	void move() {
-		//TODO: Move the bullet along its trajectory (heading) according its velocity
 		switch (this.heading) {
 			case "up" : {
 				this.y -= this.velocity;

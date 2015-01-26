@@ -8,30 +8,126 @@ part of gameentities;
 class Level {
 	// default Settings for all levels
 	static final Map<String,dynamic> defaultSettings = {
-		"wallPath" : "shootergame/images/environment/wall/",
+		"wall" : {
+			"path" : "shootergame/images/environment/wall/",
+			"animated" : false,
+			"animations" : {},
+			"type" : "dark",
+		},
 
-		"startPath" : "shootergame/images/environment/start/",
+		"floor" : {
+			"path" : "shootergame/images/environment/floor/",
+			"animated" : false,
+			"animations" : {},
+		},
 
-		"exitPath" : "shootergame/images/environment/exit/",
+		"start" : {
+			"path" : "shootergame/images/environment/start/",
+			"animated" : true,
+			"animations" : {
+				"close" : {
+					"steps" : 3,
+					"interval" : 100,
+					"type" : "once",
+					"kill" : false,
+				}
+			}
+		},
 
-		"floorPath" : "shootergame/images/environment/floor/",
+		"exit" : {
+			"path" : "shootergame/images/environment/exit/",
+			"animated" : true,
+			"animations" : {
+				"open" : {
+					"steps" : 3,
+					"interval" : 100,
+					"type" : "once",
+					"kill" : false,
+				}
+			}
+		},
 
-		"bulletPath" : "shootergame/images/environment/bullet/",
+		"bullet" : {
+			"path" : "shootergame/images/environment/bullet/",
+			"animated" : false,
+			"animations" : {},
+		},
 
-		"muzzleFlashPath" : "shootergame/images/environment/muzzleFlash/",
+		"muzzleFlash" : {
+			"path" : "shootergame/images/environment/muzzleFlash/",
+			"animated" : true,
+			"animations" : {
+				"fire" : {
+					"steps" : 4,
+					"interval" : 50,
+					"type" : "once",
+					"kill" : true,
+				}
+			}
+		},
 
-		"alienPath" :  "shootergame/images/alien/",
+		"alien" : {
+			"path" : "shootergame/images/alien/",
+			"animated" : true,
+			"animations" : {
+				"move" : {
+					"steps" : 3,
+					"interval" : 150,
+					"type" : "continious",
+				},
+				"die" : {
+					"steps" : 4,
+					"interval" : 150,
+					"type" : "once",
+					"kill" : false,
+				}
+			},
+			"colors" : ["brown", "green", "grey"],
+			"types" : ["shooter", "runner"],
+		},
 
-		"playerPath" :  "shootergame/images/player/",
+		"player" : {
+			"path" : "shootergame/images/player/",
+			"animated" : true,
+			"animations" : {
+				"move" : {
+					"steps" : 3,
+					"interval" : 150,
+					"type" : "continious",
+				},
+				"die" : {
+					"steps" : 4,
+					"interval" : 150,
+					"type" : "once",
+					"kill" : false,
+				}
+			}
+		},
 
-		"environmentPath" :  "shootergame/images/environment/",
+		"blood" : {
+			"path" : "shootergame/images/environment/blood/",
+			"animated" : false,
+			"animations" : {},
+		},
+
+		"environment" : {
+			"path" : "shootergame/images/environment/",
+			"animated" : false,
+			"animations" : {},
+		},
+
+		"wincountdown" : 10,
 	};
 
 	List<List<String>> structure; // the levels structure
 	String levelname; // the levels name
 	Map<String,dynamic> settings = defaultSettings; // the settings for the level
 	List<Entity> entities = new List<Entity>(); // List containing all entities in the level
+	List<Entity> killEntities = new List<Entity>();
 	Point start; // startpoint for the player
+	bool won = false;
+	bool lost = false;
+	Stopwatch wintimer = new Stopwatch();
 	num width;
 	num height;
 
@@ -60,7 +156,7 @@ class Level {
 				String elem = this.structure[y][x];
 				switch (elem) { // check the element
 					case "wall" : {
-						Wall wall = new Wall( (x*64), (y*64) ); // create new entity
+						Wall wall = new Wall( (x*64), (y*64), this.settings["wall"]["type"] ); // create new entity
 						this.entities.add(wall); // add entity to list
 					} break;
 					case "exit" : {
@@ -73,11 +169,13 @@ class Level {
 						this.entities.add(start);
 					} break;
 					case "as" : {
-						AlienShooter as = new AlienShooter( (x*64), (y*64) );
+						Random r = new Random();
+						AlienShooter as = new AlienShooter( (x*64), (y*64), color : this.settings["alien"]["colors"][r.nextInt(this.settings["alien"]["colors"].length)] );
 						this.entities.add(as);
 					} break;
 					case "ar" : {
-						AlienRunner ar = new AlienRunner( (x*64), (y*64) );
+						Random r = new Random();
+						AlienRunner ar = new AlienRunner( (x*64), (y*64), color : this.settings["alien"]["colors"][r.nextInt(this.settings["alien"]["colors"].length)] );
 						this.entities.add(ar);
 					} break;
 					default : {
@@ -99,7 +197,6 @@ class Level {
 		player.pathBlockedLeft = false;
 		player.pathBlockedRight = false;
 		List<Entity> newEntities = new List<Entity>();
-		List<Entity> killEntities = new List<Entity>();
 		this.entities.forEach( (Entity e) {
 			e.update();
 			if (e is Wall) {
@@ -126,78 +223,169 @@ class Level {
 					player.pathBlockedLeft = player.pathBlockedLeft || (lSize > 0) && (lSize >= tSize) && (lSize >= bSize);
 					player.pathBlockedRight = player.pathBlockedRight || (rSize > 0) && (rSize >= tSize) && (rSize >= bSize);
 				}
-			} else if (e is AlienRunner) {
-				if (e.isAlive()) {
-					if (e.isRunning) {
-						this.entities.forEach( (Entity c) {
-							if (c is Wall) {
-								if (c.intersects(e)) {
-									//TODO: Alien is hitting Wall
-								}
-							}
-						});
+			} else if (e is AlienCharacter) {
+				e.entitiesInSight = this.entities.where( (b) {
+					if (e != b) {
+						final Rectangle r = new Rectangle( 	min( e.getCenter().x, b.getCenter().x ),
+															min( e.getCenter().y, b.getCenter().y ),
+															max( e.getCenter().x, b.getCenter().x ) - min( e.getCenter().x, b.getCenter().x ),
+															max( e.getCenter().y, b.getCenter().y ) - min( e.getCenter().y, b.getCenter().y )
+														 );
+						return (   ( e.getCenter().distanceTo(b.getCenter()) <= e.visRange )
+								&& ( ! this.entities.any( (c) => ( (c is Wall) || (c is AlienCharacter) ) && !(c == e) && !(c.rec.intersects(r)) ) )
+						);
 					}
+					return false;
+				}).toList();
+
+
+				final Rectangle r = new Rectangle( 	min( e.getCenter().x, player.getCenter().x ),
+													min( e.getCenter().y, player.getCenter().y ),
+													max( e.getCenter().x, player.getCenter().x ) - min( e.getCenter().x, player.getCenter().x ),
+													max( e.getCenter().y, player.getCenter().y ) - min( e.getCenter().y, player.getCenter().y )
+												 );
+				List<Entity> inLineOfSight = this.entities.where( (c) => ( ( (c is Wall) || (c is AlienCharacter) ) && (c != e) && ( c.rec.intersects(r)) ) ).toList();
+				if (   ( e.getCenter().distanceTo(player.getCenter()) <= e.visRange )
+						&& ( ! this.entities.any( (c) => ( ( (c is Wall) || ( (c is AlienCharacter) && (c.isAlive()) ) ) && (c != e) && ( c.rec.intersects(r)) ) ) )
+				) {
+					e.entitiesInSight.add(player);
 				}
-			} else if (e is AlienShooter) {
-				if (e.isAlive()) {
-					if (e.shoot) {
-						newEntities.add(new Bullet(e.getMuzzleCoordinates().x, e.getMuzzleCoordinates().y, e));
+
+				if (e is AlienRunner) {
+					e.pathBlockedDown = false;
+					e.pathBlockedLeft = false;
+					e.pathBlockedRight = false;
+					e.pathBlockedUp = false;
+					this.entities.where( (w) => (w is Wall) && (w.intersects(e)) ).forEach( (w) {
+						final Rectangle col = w.rec.intersection(e.rec);
+
+    					final Rectangle l = new Rectangle(e.rec.left, e.rec.top, 0, e.rec.height);
+    					final Rectangle r = new Rectangle(e.rec.left+e.rec.width, e.rec.top, 0, e.rec.height);
+    					final Rectangle t = new Rectangle(e.rec.left, e.rec.top, e.rec.width, 0);
+    					final Rectangle b = new Rectangle(e.rec.left, e.rec.top+e.rec.height, e.rec.width, 0);
+
+    					final Rectangle lInter = col.intersection(l);
+    					final Rectangle rInter = col.intersection(r);
+    					final Rectangle tInter = col.intersection(t);
+    					final Rectangle bInter = col.intersection(b);
+
+    					final num lSize = (lInter != null) ? lInter.height : 0;
+    					final num rSize = (rInter != null) ? rInter.height : 0;
+    					final num tSize = (tInter != null) ? tInter.width : 0;
+    					final num bSize = (bInter != null) ? bInter.width : 0;
+
+    					e.pathBlockedUp = e.pathBlockedUp || (tSize > 0) && (tSize >= rSize) && (tSize >= lSize);
+    					e.pathBlockedDown = e.pathBlockedDown || (bSize > 0) && (bSize >= rSize) && (bSize >= lSize);
+    					e.pathBlockedLeft = e.pathBlockedLeft || (lSize > 0) && (lSize >= tSize) && (lSize >= bSize);
+    					e.pathBlockedRight = e.pathBlockedRight || (rSize > 0) && (rSize >= tSize) && (rSize >= bSize);
+					});
+
+					if (e.isAlive()) {
+						if (e.isBiting) {
+							e.isBiting = false;
+							if (player.isAlive() && (e.getCenter().distanceTo(player.getCenter()) < e.width)) {
+								Random r = new Random();
+								player.hit(10 + r.nextInt(15));
+							}
+						}
+					}
+				} else if (e is AlienShooter) {
+					if (e.isAlive()) {
+						if (e.firingBullet) {
+		    				e.firingBullet = false;
+							newEntities.add(new Bullet(e.getMuzzleCoordinates().x, e.getMuzzleCoordinates().y, e));
+							newEntities.add(new muzzleFlash(e.getMuzzleCoordinates().x, e.getMuzzleCoordinates().y, e));
+						}
 					}
 				}
 			} else if (e is Bullet) {
-				if (e.alive) {
-					if ( (e.x < 0) || (e.x > this.width) || (e.y < 0) || (e.y > this.height) ) {
-						e.die();
-					}
-					this.entities.forEach( (Entity c) {
+				if ( (e.x < 1) || (e.x > this.width) || (e.y < 1) || (e.y > this.height) ) {
+					e.die();
+				}
+				this.entities.where((i) => (i != e.owner) && ( (i is CharacterEntity) || (i is Wall))).forEach( (Entity c) {
+					if (e.alive && c.intersects(e)) {
 						if (c is Wall) {
-							if (c.intersects(e)) {
-								e.die();
-							}
+							e.die();
 						} else if (c is AlienCharacter) {
-							if (c.intersects(e)) {
+							if ( (e.owner is PlayerCharacter) && c.isAlive()) {
 								c.hit( 25 );
+								if (!c.isAlive()) {
+									player.addPoints( c.points );
+								}
 								e.die();
 							}
 						}
-					});
-				} else {
-					killEntities.add(e);
+					}
+				});
+				if ( (e.owner is AlienCharacter) && (e.intersects(player)) && player.isAlive() ) {
+					player.hit( e.hitpoints );
+					e.die();
 				}
 			} else if (e is muzzleFlash) {
-				if ( (e.animationStep == 4) && (e.animationTimer.elapsedMilliseconds > e.animationInterval) ) {
-					killEntities.add(e);
-				}
-			} else if (e is Exit) {
 				// ...
+			} else if (e is Exit) {
+				if (player.intersects(e)) {
+					e.action = "open";
+					this.wintimer.start();
+					this.won = (this.wintimer.elapsedMilliseconds > this.settings["wincountdown"]);
+				}
+			} else if (e is Start) {
+				if (!player.intersects(e)) {
+					e.action = "close";
+				}
+			}
+			if (!e.alive) {
+				this.killEntities.add(e);
 			}
 		});
 
 		player.update(); // update the player
 		// Boundary-check
-		if (player.x > (1023 - player.width)) {
-			player.x = (1023 - player.width);
-		}
-		if (player.x < 1) {
-			player.x = 1;
-		}
-		if (player.y > (767 - player.width)) {
-			player.y = (767 - player.width);
-		}
-		if (player.y < 1) {
-			player.y = 1;
-		}
-		if (player.firingBullet) {
-			player.firingBullet = false;
-			newEntities.add(new Bullet(player.getMuzzleCoordinates().x, player.getMuzzleCoordinates().y, player));
-			newEntities.add(new muzzleFlash(player.getMuzzleCoordinates().x, player.getMuzzleCoordinates().y, player));
+		if (player.isAlive()) {
+			if (player.x > (1013 - player.width)) {
+				player.x = (1013 - player.width);
+			}
+			if (player.x < 10) {
+				player.x = 10;
+			}
+			if (player.y > (757 - player.width)) {
+				player.y = (757 - player.width);
+			}
+			if (player.y < 10) {
+				player.y = 10;
+			}
+			if (player.firingBullet) {
+				player.firingBullet = false;
+				newEntities.add(new Bullet(player.getMuzzleCoordinates().x, player.getMuzzleCoordinates().y, player));
+				newEntities.add(new muzzleFlash(player.getMuzzleCoordinates().x, player.getMuzzleCoordinates().y, player));
+			}
+
+			player.entitiesInSight = this.entities.where( (b) {
+				final Rectangle r = new Rectangle( 	min( player.getCenter().x, b.getCenter().x ),
+													min( player.getCenter().y, b.getCenter().y ),
+													max( player.getCenter().x, b.getCenter().x ) - min( player.getCenter().x, b.getCenter().x ),
+													max( player.getCenter().y, b.getCenter().y ) - min( player.getCenter().y, b.getCenter().y )
+												 );
+				List<Entity> test = this.entities.where( (c) => (c is Wall) && (c != b) && (c.rec.intersects(r)) ).toList();
+				return (   ( player.getCenter().distanceTo(b.getCenter()) <= player.visRange )
+						&& ( ! this.entities.any( (c) => (c is Wall) && (c != b) && (c.rec.intersects(r)) ) )
+				);
+			}).toList();
+		} else {
+			if (player.lives > 0) {
+				player.health = 100;
+				player.heading = "up";
+				player.resetTo(this.start.x, this.start.y);
+			} else {
+				this.lost = true;
+			}
 		}
 
-		newEntities.forEach( (Entity e) {
-			this.entities.add(e);
-		});
+		this.entities.addAll(newEntities);
 
-		killEntities.forEach( (Entity e) {
+		//Test for speed? this.entities.removeWhere( (e) => killEntities.contains(e) );
+
+		this.killEntities.forEach( (Entity e) {
 			this.entities.remove(e);
 		});
 	}

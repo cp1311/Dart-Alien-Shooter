@@ -10,13 +10,11 @@ abstract class Entity {
 	num y; // y coordinate of the entitys upper left corner
 	num width;
 	num height;
-	num animationStep = 0; // the curent step in the animation(-cycle)
-	Stopwatch animationTimer = new Stopwatch();
-	num animationInterval = 100; // ms for each animationstep
-	bool animated; // determines if this entity is animated or static
 	Rectangle rec = new Rectangle(0, 0, 0, 0); // the rectangle representing the entity in the gameworld
 	bool centerInGrid;
 	bool alive = true;
+	String action = "";
+	String heading = "";
 
 	/**
 	 * Entity Constructor
@@ -27,7 +25,7 @@ abstract class Entity {
 	 * [height] entity-height
 	 * [animated] is the entity animated or static?
 	 */
-	Entity (num this.x, num this.y, num this.width, num this.height, { bool this.animated : false, this.centerInGrid : false }) {
+	Entity (num this.x, num this.y, num this.width, num this.height, { this.centerInGrid : false }) {
 		if (this.centerInGrid) {
 			final num dx = 64 - this.width;
 			final num dy = 64 - this.height;

@@ -15,4 +15,5 @@ part 'bullet.dart';
 part 'muzzleFlash.dart';
 part 'exit.dart';
 part 'start.dart';
+part 'blood.dart';
 part 'armedcharacter.dart';

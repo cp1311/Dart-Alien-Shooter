@@ -14,10 +14,37 @@ h1, p {
   	color: #333;
 }
 
-#arkanoidgame {
-	margin: 1em auto;
-	border: 3px solid #ccc;
+#gamegui {
+	margin: auto;
+	height: 40px;
+	width: 1024px;
 	background-color: #000;
+	border: 3px solid #ccc;
+}
+
+#gamegui td {
+	border: 1px solid #ccc;
+	font-size: large;
+}
+
+#gamegui #health {
+	color: red;
+	width: 200px;
+}
+
+#gamegui #level {
+	color: white;
+	width: 724px;
+}
+
+#gamegui #ammo {
+	color: green;
+	width: 150px;
+}
+
+#gamegui #score {
+	color: white;
+	width: 150px;
 }
 
 .button {

@@ -6,10 +6,14 @@ part of gameentities;
  * A character bearing weapons (of mass destruction...)
  */
 class ArmedCharacter {
-	num bullets = 1; // max shots to have underway at any time
+	num bullets = 5; // max shots to have underway at any time
 	num shotsFired = 0; // count of shots already underway
+	bool shoot = false; // does the character want to fire?
+	bool shooting = false; // is the still shooting or can he fire a new bullet?
+	bool firingBullet = false; // is the gun firing?
+	num maxShootsPerTime = 1; // max num of bullets this character can have flying at any time
+	CharacterEntity char; // TODO: move muzzleOffset to VIEW
 	Point muzzleOffset;
-	CharacterEntity char; // TODO: find a better way to reference this char
 
 	/**
 	 * getMuzzleCoordinates

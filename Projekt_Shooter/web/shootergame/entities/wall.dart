@@ -6,10 +6,10 @@ part of gameentities;
  * a piece of wall in the game
  */
 class Wall extends Entity {
-	num walltype;
+	String walltype;
 
-	Wall(num x, num y, { num walltype : 0 }) : super(x, y, 64, 64, centerInGrid : true) {
-		this.walltype = walltype;
+	Wall(num x, num y, String this.walltype) : super(x, y, 64, 64, centerInGrid : true) {
+		// ...
 	}
 
 	void update () {
