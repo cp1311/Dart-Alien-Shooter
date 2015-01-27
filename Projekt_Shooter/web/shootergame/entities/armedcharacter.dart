@@ -12,7 +12,6 @@ class ArmedCharacter {
 	bool shooting = false; // is the still shooting or can he fire a new bullet?
 	bool firingBullet = false; // is the gun firing?
 	num maxShootsPerTime = 1; // max num of bullets this character can have flying at any time
-	CharacterEntity char; // TODO: move muzzleOffset to VIEW
 	Point muzzleOffset;
 
 	/**
@@ -22,18 +21,18 @@ class ArmedCharacter {
 	 */
 	Point getMuzzleCoordinates() {
 		Point muzzle;
-		switch(this.char.heading) {
+		switch((this as CharacterEntity).heading) {
 			case "up" : {
-				muzzle = new Point( (this.char.getCenter().x + this.muzzleOffset.x ), (this.char.getCenter().y + this.muzzleOffset.y) );
+				muzzle = new Point( ((this as CharacterEntity).getCenter().x + this.muzzleOffset.x ), ((this as CharacterEntity).getCenter().y + this.muzzleOffset.y) );
 			} break;
 			case "right" : {
-				muzzle = new Point( (this.char.getCenter().x - this.muzzleOffset.y ), (this.char.getCenter().y + this.muzzleOffset.x) );
+				muzzle = new Point( ((this as CharacterEntity).getCenter().x - this.muzzleOffset.y ), ((this as CharacterEntity).getCenter().y + this.muzzleOffset.x) );
 			} break;
 			case "down" : {
-				muzzle = new Point( (this.char.getCenter().x - this.muzzleOffset.x ), (this.char.getCenter().y - this.muzzleOffset.y) );
+				muzzle = new Point( ((this as CharacterEntity).getCenter().x - this.muzzleOffset.x ), ((this as CharacterEntity).getCenter().y - this.muzzleOffset.y) );
 			} break;
 			case "left" : {
-				muzzle = new Point( (this.char.getCenter().x + this.muzzleOffset.y ), (this.char.getCenter().y - this.muzzleOffset.x) );
+				muzzle = new Point( ((this as CharacterEntity).getCenter().x + this.muzzleOffset.y ), ((this as CharacterEntity).getCenter().y - this.muzzleOffset.x) );
 			} break;
 			default : {
 				// ...

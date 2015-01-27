@@ -1,72 +1,527 @@
 {
-	0 : [
-		[ "wall", "wall", "wall", "exit", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", ],
-		[ "wall", "as", "", "", "wall",	"", "", "wall", "", "", "", "as", "", "", "", "wall", ],
-		[ "wall", "", "wall", "wall", "wall", "wall", "", "wall", "", "wall", "wall", "wall", "wall", "wall", "", "wall", ],
-		[ "wall", "ar", "", "", "", "", "as", "wall", "", "wall", "", "", "", "wall", "", "wall", ],
-		[ "wall", "", "wall", "wall", "", "wall", "wall", "wall", "", "wall", "", "wall", "wall", "wall", "", "wall", ],
-		[ "wall", "", "as", "wall", "", "", "", "", "as", "wall", "", "", "", "", "", "wall", ],
-		[ "wall", "wall", "wall", "", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "", "wall", "", "wall", ],
-		[ "wall", "", "", "ar", "wall", "ar", "", "", "", "", "", "wall", "", "wall", "ar", "wall", ],
-		[ "wall", "", "wall", "wall", "wall", "", "wall", "", "wall", "wall", "", "", "", "wall", "wall", "wall", ],
-		[ "wall", "", "", "", "wall", "", "wall", "", "wall", "wall", "", "wall", "wall", "wall", "", "wall", ],
-		[ "wall", "", "wall", "as", "", "", "wall", "start", "wall", "as", "", "", "", "", "ar", "wall", ],
-		[ "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", ],
-	],
-	1 : [
-		[ "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "exit", "wall", "wall", ],
-		[ "wall", "wall", "wall", "as", "wall", "ar", "wall","wall", "wall","ar","","","wall","","wall","wall", ],
-		[ "wall","", "wall","","wall","","","wall","","","wall","","",	"as","wall","wall", ],
-		[ "wall","", "","","wall","","wall","","","wall","wall","wall","wall","wall","","wall", ],
-		[ "wall","as", 	"wall",	"","",	"",	"","",	"wall",	"wall",	"","",	"","",	"ar","wall", ],
-		[ "wall",	"", 	"wall",	"wall",	"wall",	"","wall","wall","as","wall","ar","wall","","wall","","wall", ],
-		[ "wall","","",	"","","","wall","","","wall",	"wall",	"wall",	"","wall","wall","wall", ],
-		[ "wall","","wall","","wall","","wall","","wall","wall","","wall","","","","wall", ],
-		[ "wall","", 	"wall",	"ar",	"","","","","","","",	"","as","wall",	"","wall", ],
-		[ "wall","","wall","wall","wall","wall","","wall","wall","",	"wall","","wall","wall","","wall", ],
-		[ "wall","","",	"","","","","ar","wall","","","","","","as","wall", ],
-		[ "wall","wall","start","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall", ],
-	],
-	2 : [
-    		[ "wall","wall","wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "exit", "wall", "wall", ],
-    		[ "wall","as", "","","","","","","","","","","wall","","wall","wall", ],
-   		[ "wall","","wall","","","wall","ar","wall","ar","wall","wall","","","ar","wall","wall", ],
-    		[ "wall","wall","wall","","wall","wall","wall", "wall", "wall","wall","wall","wall","wall","wall","as","wall", ],
-    		[ "wall","","","","wall","as","","","","as","wall","","","","","wall", ],
-    		[ "wall","wall","","wall","wall","","","","","","","","wall","wall","wall","wall", ],
-    		[ "wall","wall","","","","","", "ar","","","wall","","wall","wall", "as","wall", ],
-    		[ "wall","wall","","wall","wall","","","","","","wall","",  "","","","wall", ],
-    		[ "wall","","","","wall","wall","wall", "","wall","wall","wall","","wall","","wall","wall", ],
-    		[ "wall","", "wall","","wall",  "ar","wall","","wall","ar","wall","","wall","","wall","wall", ],
-    		[ "wall","as",  "wall", "","","","wall","","wall","", "","","","","","wall", ],
-    		[ "wall","wall","wall", "wall", "wall", "wall", "wall", "start","wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", ],
-  	],
-	3 : [
-		[ "wall","exit","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall", ],
-		[ "wall","", "wall","as","","","","","ar","wall","","ar","","wall","ar","wall", ],
-		[ "wall","ar","","","wall","wall","wall","wall","","wall","","wall","","wall","","wall", ],
-		[ "wall","wall", "wall","wall",	"as","wall","",	"","","wall","","wall","","wall","","wall", ],
-		[ "wall","wall","as","wall","","wall","","wall","wall",	"wall",	"","wall","","","","wall", ],
-		[ "wall","wall","","wall","","wall","","wall","ar","wall","as","wall","","wall","wall","wall", ],
-		[ "wall","wall","","","","wall","","","","wall","","wall","","wall","as","wall", ],
-		[ "wall","wall","","wall","","","","wall","wall","wall","","","","wall","","wall", ],
-		[ "wall","wall","","wall","","wall","",	"wall","wall","wall","","wall","wall","wall","","wall", ],
-		[ "wall","wall","","wall","","wall","as","","",	"","","","","","","wall", ],
-		[ "wall","wall","ar","","","","","wall","wall",	"wall",	"wall","","wall","","wall","wall", ],
-		[ "wall","wall","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"start","wall",	"wall",	"wall",	"wall", ],
-	],
-	4 :[
-		[ "wall","wall","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall", ],
-		[ "wall","","",	"as","wall","as","","",	"","","","","","","ar","wall", ],
-		[ "wall","", "wall","","wall","","wall","wall",	"wall",	"wall",	"wall",	"","wall","wall","wall","wall", ],
-		[ "wall","", "wall","","","","wall","ar","wall","as","wall","","","","","wall", ],
-		[ "wall","","wall","",	"wall","wall","wall","","wall","","wall","wall","","wall","","wall", ],
-		[ "wall","", "wall","",	"wall",	"","","","wall","","wall","wall","","wall","as","wall", ],
-		[ "wall","ar","","","wall","","wall","","wall",	"","","","","","wall","wall", ],
-		[ "wall","wall","","wall","wall","","wall","","wall","wall","wall","wall","","wall","as","wall", ],
-		[ "wall","wall", "","","","ar","wall","","wall","ar","","","","wall","","wall", ],
-		[ "wall","wall","","wall","wall","wall","exit",	"","wall","wall","wall","wall","","wall","","wall", ],
-		[ "wall","", "ar","","","wall",	"","as","wall",	"","",	"","","","","wall", ],
-		[ "wall","wall","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"start","wall",	"wall",	"wall",	"wall",	"wall",	"wall", ],
-	]
+	"Alien Shooter Level 1" : {
+		"structure" : [
+			[ "wall", "wall", "wall", "exit", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall" ],
+			[ "wall", "as", "", "", "wall",	"", "", "wall", "", "", "", "as", "", "", "", "wall" ],
+			[ "wall", "", "wall", "wall", "wall", "wall", "", "wall", "", "wall", "wall", "wall", "wall", "wall", "", "wall" ],
+			[ "wall", "ar", "", "", "", "", "as", "wall", "", "wall", "", "", "", "wall", "", "wall" ],
+			[ "wall", "", "wall", "wall", "", "wall", "wall", "wall", "", "wall", "", "wall", "wall", "wall", "", "wall" ],
+			[ "wall", "", "as", "wall", "", "", "", "", "as", "wall", "", "", "", "", "", "wall" ],
+			[ "wall", "wall", "wall", "", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "", "wall", "", "wall" ],
+			[ "wall", "", "", "ar", "wall", "ar", "", "", "", "", "", "wall", "", "wall", "ar", "wall" ],
+			[ "wall", "", "wall", "wall", "wall", "", "wall", "", "wall", "wall", "", "", "", "wall", "wall", "wall" ],
+			[ "wall", "", "", "", "wall", "", "wall", "", "wall", "wall", "", "wall", "wall", "wall", "", "wall" ],
+			[ "wall", "", "wall", "as", "", "", "wall", "start", "wall", "as", "", "", "", "", "ar", "wall" ],
+			[ "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall" ]
+		],
+		"settings" : {
+			"wall" : {
+				"path" : "shootergame/images/environment/wall/",
+				"animated" : false,
+				"animations" : {},
+				"type" : "light"
+			},
+
+			"floor" : {
+				"path" : "shootergame/images/environment/floor/",
+				"animated" : false,
+				"animations" : {}
+			},
+
+			"start" : {
+				"path" : "shootergame/images/environment/start/",
+				"animated" : true,
+				"animations" : {
+					"close" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"exit" : {
+				"path" : "shootergame/images/environment/exit/",
+				"animated" : true,
+				"animations" : {
+					"open" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"bullet" : {
+				"path" : "shootergame/images/environment/bullet/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"muzzleFlash" : {
+				"path" : "shootergame/images/environment/muzzleFlash/",
+				"animated" : true,
+				"animations" : {
+					"fire" : {
+						"steps" : 4,
+						"interval" : 50,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"alien" : {
+				"path" : "shootergame/images/alien/",
+				"animated" : true,
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : false
+					}
+				},
+				"muzzleOffset" : { "x" : -2, "y" : 16 },
+				"colors" : ["green"],
+				"types" : ["shooter", "runner"]
+			},
+
+			"player" : {
+				"path" : "shootergame/images/player/",
+				"animated" : true,
+				"muzzleOffset" : { "x" : 8, "y" : -23 },
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"blood" : {
+				"path" : "shootergame/images/environment/blood/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"environmentpath" : "shootergame/images/environment/",
+
+			"wincountdown" : 5000
+		}
+	},
+	"Inside the Cave" : {
+		"structure" : [
+			[ "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "exit", "wall", "wall" ],
+			[ "wall", "wall", "wall", "as", "wall", "ar", "wall","wall", "wall","ar","","","wall","","wall","wall" ],
+			[ "wall","", "wall","","wall","","","wall","","","wall","","",	"as","wall","wall" ],
+			[ "wall","", "","","wall","","wall","","","wall","wall","wall","wall","wall","","wall" ],
+			[ "wall","as", 	"wall",	"","",	"",	"","",	"wall",	"wall",	"","",	"","",	"ar","wall" ],
+			[ "wall",	"", 	"wall",	"wall",	"wall",	"","wall","wall","as","wall","ar","wall","","wall","","wall" ],
+			[ "wall","","",	"","","","wall","","","wall",	"wall",	"wall",	"","wall","wall","wall" ],
+			[ "wall","","wall","","wall","","wall","","wall","wall","","wall","","","","wall" ],
+			[ "wall","", 	"wall",	"ar",	"","","","","","","",	"","as","wall",	"","wall" ],
+			[ "wall","","wall","wall","wall","wall","","wall","wall","",	"wall","","wall","wall","","wall" ],
+			[ "wall","","",	"","","","","ar","wall","","","","","","as","wall" ],
+			[ "wall","wall","start","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall" ]
+		],
+		"settings" : {
+			"wall" : {
+				"path" : "shootergame/images/environment/wall/",
+				"animated" : false,
+				"animations" : {},
+				"type" : "dark"
+			},
+
+			"floor" : {
+				"path" : "shootergame/images/environment/floor/",
+				"animated" : false,
+				"animations" : {}
+			},
+
+			"start" : {
+				"path" : "shootergame/images/environment/start/",
+				"animated" : true,
+				"animations" : {
+					"close" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"exit" : {
+				"path" : "shootergame/images/environment/exit/",
+				"animated" : true,
+				"animations" : {
+					"open" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"bullet" : {
+				"path" : "shootergame/images/environment/bullet/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"muzzleFlash" : {
+				"path" : "shootergame/images/environment/muzzleFlash/",
+				"animated" : true,
+				"animations" : {
+					"fire" : {
+						"steps" : 4,
+						"interval" : 50,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"alien" : {
+				"path" : "shootergame/images/alien/",
+				"animated" : true,
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : false
+					}
+				},
+				"muzzleOffset" : { "x" : -2, "y" : 16 },
+				"colors" : ["brown"],
+				"types" : ["shooter", "runner"]
+			},
+
+			"player" : {
+				"path" : "shootergame/images/player/",
+				"animated" : true,
+				"muzzleOffset" : { "x" : 8, "y" : -23 },
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"blood" : {
+				"path" : "shootergame/images/environment/blood/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"environmentpath" : "shootergame/images/environment/",
+
+			"wincountdown" : 5000
+		}
+	},
+	"Encounters of the third kind of magic" : {
+		"structure" : [
+	    	[ "wall","wall","wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "exit", "wall", "wall" ],
+	    	[ "wall","as", "","","","","","","","","","","wall","","wall","wall" ],
+	   		[ "wall","","wall","","","wall","ar","wall","ar","wall","wall","","","ar","wall","wall" ],
+	    	[ "wall","wall","wall","","wall","wall","wall", "wall", "wall","wall","wall","wall","wall","wall","as","wall" ],
+	    	[ "wall","","","","wall","as","","","","as","wall","","","","","wall" ],
+	    	[ "wall","wall","","wall","wall","","","","","","","","wall","wall","wall","wall" ],
+	    	[ "wall","wall","","","","","", "ar","","","wall","","wall","wall", "as","wall" ],
+	    	[ "wall","wall","","wall","wall","","","","","","wall","",  "","","","wall" ],
+	    	[ "wall","","","","wall","wall","wall", "","wall","wall","wall","","wall","","wall","wall" ],
+	    	[ "wall","", "wall","","wall",  "ar","wall","","wall","ar","wall","","wall","","wall","wall" ],
+	    	[ "wall","as",  "wall", "","","","wall","","wall","", "","","","","","wall" ],
+	    	[ "wall","wall","wall", "wall", "wall", "wall", "wall", "start","wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall" ]
+	  	],
+		"settings" : {
+			"wall" : {
+				"path" : "shootergame/images/environment/wall/",
+				"animated" : false,
+				"animations" : {},
+				"type" : "light"
+			},
+
+			"floor" : {
+				"path" : "shootergame/images/environment/floor/",
+				"animated" : false,
+				"animations" : {}
+			},
+
+			"start" : {
+				"path" : "shootergame/images/environment/start/",
+				"animated" : true,
+				"animations" : {
+					"close" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"exit" : {
+				"path" : "shootergame/images/environment/exit/",
+				"animated" : true,
+				"animations" : {
+					"open" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"bullet" : {
+				"path" : "shootergame/images/environment/bullet/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"muzzleFlash" : {
+				"path" : "shootergame/images/environment/muzzleFlash/",
+				"animated" : true,
+				"animations" : {
+					"fire" : {
+						"steps" : 4,
+						"interval" : 50,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"alien" : {
+				"path" : "shootergame/images/alien/",
+				"animated" : true,
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : false
+					}
+				},
+				"muzzleOffset" : { "x" : -2, "y" : 16 },
+				"colors" : ["green","brown"],
+				"types" : ["shooter", "runner"]
+			},
+
+			"player" : {
+				"path" : "shootergame/images/player/",
+				"animated" : true,
+				"muzzleOffset" : { "x" : 8, "y" : -23 },
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"blood" : {
+				"path" : "shootergame/images/environment/blood/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"environmentpath" : "shootergame/images/environment/",
+
+			"wincountdown" : 5000
+		}
+	  },
+	"Alien Shooter Level 4" : {
+		"structure" : [
+			[ "wall","exit","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall" ],
+			[ "wall","", "wall","as","","","","","ar","wall","","ar","","wall","ar","wall" ],
+			[ "wall","ar","","","wall","wall","wall","wall","","wall","","wall","","wall","","wall" ],
+			[ "wall","wall", "wall","wall",	"as","wall","",	"","","wall","","wall","","wall","","wall" ],
+			[ "wall","wall","as","wall","","wall","","wall","wall",	"wall",	"","wall","","","","wall" ],
+			[ "wall","wall","","wall","","wall","","wall","ar","wall","as","wall","","wall","wall","wall" ],
+			[ "wall","wall","","","","wall","","","","wall","","wall","","wall","as","wall" ],
+			[ "wall","wall","","wall","","","","wall","wall","wall","","","","wall","","wall" ],
+			[ "wall","wall","","wall","","wall","",	"wall","wall","wall","","wall","wall","wall","","wall" ],
+			[ "wall","wall","","wall","","wall","as","","",	"","","","","","","wall" ],
+			[ "wall","wall","ar","","","","","wall","wall",	"wall",	"wall","","wall","","wall","wall" ],
+			[ "wall","wall","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"start","wall",	"wall",	"wall",	"wall" ]
+		],
+		"settings" : {
+			"wall" : {
+				"path" : "shootergame/images/environment/wall/",
+				"animated" : false,
+				"animations" : {},
+				"type" : "light"
+			},
+
+			"floor" : {
+				"path" : "shootergame/images/environment/floor/",
+				"animated" : false,
+				"animations" : {}
+			},
+
+			"start" : {
+				"path" : "shootergame/images/environment/start/",
+				"animated" : true,
+				"animations" : {
+					"close" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"exit" : {
+				"path" : "shootergame/images/environment/exit/",
+				"animated" : true,
+				"animations" : {
+					"open" : {
+						"steps" : 3,
+						"interval" : 100,
+						"type" : "once",
+						"kill" : false
+					}
+				}
+			},
+
+			"bullet" : {
+				"path" : "shootergame/images/environment/bullet/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"muzzleFlash" : {
+				"path" : "shootergame/images/environment/muzzleFlash/",
+				"animated" : true,
+				"animations" : {
+					"fire" : {
+						"steps" : 4,
+						"interval" : 50,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"alien" : {
+				"path" : "shootergame/images/alien/",
+				"animated" : true,
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : false
+					}
+				},
+				"muzzleOffset" : { "x" : -2, "y" : 16 },
+				"colors" : ["green","brown","grey"],
+				"types" : ["shooter", "runner"]
+			},
+
+			"player" : {
+				"path" : "shootergame/images/player/",
+				"animated" : true,
+				"muzzleOffset" : { "x" : 8, "y" : -23 },
+				"animations" : {
+					"move" : {
+						"steps" : 3,
+						"interval" : 150,
+						"type" : "continious"
+					},
+					"die" : {
+						"steps" : 4,
+						"interval" : 150,
+						"type" : "once",
+						"kill" : true
+					}
+				}
+			},
+
+			"blood" : {
+				"path" : "shootergame/images/environment/blood/",
+				"animated" : false,
+				"animations" : {},
+				"types" : ["alien", "player"]
+			},
+
+			"environmentpath" : "shootergame/images/environment/",
+
+			"wincountdown" : 5000
+		}
+	},
+	"Endgame" : {
+		"structure" : [
+			[ "wall","wall","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall" ],
+			[ "wall","","",	"as","wall","as","","",	"","","","","","","ar","wall" ],
+			[ "wall","", "wall","","wall","","wall","wall",	"wall",	"wall",	"wall",	"","wall","wall","wall","wall" ],
+			[ "wall","", "wall","","","","wall","ar","wall","as","wall","","","","","wall" ],
+			[ "wall","","wall","",	"wall","wall","wall","","wall","","wall","wall","","wall","","wall" ],
+			[ "wall","", "wall","",	"wall",	"","","","wall","","wall","wall","","wall","as","wall" ],
+			[ "wall","ar","","","wall","","wall","","wall",	"","","","","","wall","wall" ],
+			[ "wall","wall","","wall","wall","","wall","","wall","wall","wall","wall","","wall","as","wall" ],
+			[ "wall","wall", "","","","ar","wall","","wall","ar","","","","wall","","wall" ],
+			[ "wall","wall","","wall","wall","wall","exit",	"","wall","wall","wall","wall","","wall","","wall" ],
+			[ "wall","", "ar","","","wall",	"","as","wall",	"","",	"","","","","wall" ],
+			[ "wall","wall","wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"wall",	"start","wall",	"wall",	"wall",	"wall",	"wall",	"wall" ]
+		],
+	  	"settings" : {}
+	}
 }

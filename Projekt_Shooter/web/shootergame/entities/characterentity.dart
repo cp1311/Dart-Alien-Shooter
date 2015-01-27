@@ -127,7 +127,7 @@ abstract class CharacterEntity extends Entity {
 	 * distracts [damage] from characters health and calls die if character died
 	 */
 	void hit( num damage ) {
-		this.health -= damage; // distract damage from health
+		this.health = (this.health - damage >= 0) ? this.health - damage : 0; // distract damage from health
 		if (!this.isAlive()) { // if character died
 			this.die(); // kill this character
 		}

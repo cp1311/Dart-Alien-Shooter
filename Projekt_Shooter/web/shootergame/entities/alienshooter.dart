@@ -10,16 +10,11 @@ class AlienShooter extends AlienCharacter with ArmedCharacter {
 	Stopwatch shootTimer = new Stopwatch();
 	num reloadTime = 1000;
 
-	AlienShooter (num x, num y, { String color : "green", Point muzzleOffset }) : super.fromArmedChar(x, y, "shooter", color) {
+	AlienShooter (num x, num y, { String color : "green", Point offset }) : super.fromArmedChar(x, y, "shooter", color) {
 		this.lives = 1;
 		this.health = 50;
-		this.char = this;
 		this.points = 15;
-		if (muzzleOffset == null) {
-			this.muzzleOffset = new Point(-2, -16);
-		} else {
-			this.muzzleOffset = muzzleOffset;
-		}
+		this.muzzleOffset = offset;
 	}
 
 	void update() {
@@ -50,7 +45,6 @@ class AlienShooter extends AlienCharacter with ArmedCharacter {
 				this.shoot = false;
 			}
 			if (this.shoot) {
-				//TODO: Shoot a new bullet at the player
 				this.shootTimer.start();
     			if ( (!this.shooting) && (this.bullets > 0) && (this.shotsFired < this.maxShootsPerTime) ) {
     				this.shotsFired++;

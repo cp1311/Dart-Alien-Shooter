@@ -43,15 +43,21 @@ void initGame() {
 	final TableCellElement levelgui = querySelector("#level");
 	final TableCellElement ammogui = querySelector("#ammo");
 	final TableCellElement scoregui = querySelector("#score");
+	final ProgressElement loadgui = querySelector("#progress");
 	final CanvasRenderingContext2D stage = canvas.getContext("2d"); // retreive the state of the canvas
+	querySelector("body").classes.add("dark");
 	canvas.classes.remove("hidden");
 	gui.classes.remove("hidden");
-	final Map<String,TableCellElement> gamegui = new Map<String,TableCellElement>();
+	final Map<String,HtmlElement> gamegui = new Map<String,HtmlElement>();
 	gamegui["health"] = healthgui;
 	gamegui["level"] = levelgui;
 	gamegui["ammo"] = ammogui;
 	gamegui["score"] = scoregui;
-	gCore = new GameCore(stage, gamegui); // initialize the gamecore
+	gamegui["progress"] = loadgui;
+
+	gCore = new GameCore(stage, gamegui, "levels.txt"); // initialize the gamecore
+	//gCore = new GameCore(stage, gamegui);
+
 	final Timer clock = new Timer.periodic(new Duration(milliseconds:8), gameTick); // set up the gametimer
 	window.animationFrame.then(drawFrame); // start drawing the game to th canvas
 

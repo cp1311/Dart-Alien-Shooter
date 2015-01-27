@@ -14,6 +14,11 @@ h1, p {
   	color: #333;
 }
 
+.dark {
+	background-color: #000;
+	transition: background-color 3s;
+}
+
 #gamegui {
 	margin: auto;
 	height: 40px;
@@ -29,7 +34,7 @@ h1, p {
 
 #gamegui #health {
 	color: red;
-	width: 200px;
+	width: 300px;
 }
 
 #gamegui #level {
@@ -45,6 +50,23 @@ h1, p {
 #gamegui #score {
 	color: white;
 	width: 150px;
+}
+
+#wrapper {
+    position: relative;
+}
+
+#progress {
+	z-index: 10;
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 800px;
+	height: 36px;
+	background-color: green;
 }
 
 .button {

@@ -10,7 +10,7 @@ class AlienRunner extends AlienCharacter {
 	bool isChewing = false; // can the Alien bite again?
 	bool bite = false; // is this Alien in Range to bite?
 	Stopwatch biteTimer = new Stopwatch();
-	num biteCooldown = 1500;
+	num biteCooldown = 1250;
 
 	AlienRunner (num x, num y, {String color : "green"}) : super (x, y, "runner", color) {
 		this.lives = 1;

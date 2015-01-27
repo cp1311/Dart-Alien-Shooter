@@ -15,18 +15,12 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	 * [y] y coordinate
 	 * [animated] is the entity animated or static?
 	 */
-	PlayerCharacter (num x, num y, { Point muzzleOffset }) : super.fromArmedChar(x, y, 40, 40, true) {
+	PlayerCharacter (num x, num y) : super.fromArmedChar(x, y, 40, 40, true) {
 		this.lives = 3;
 		this.health = 100;
 		this.bullets = 10;
 		this.shotsFired = 0;
 		this.maxShootsPerTime = 1;
-		this.char = this;
-		if (muzzleOffset == null) {
-			this.muzzleOffset = new Point(8, -22);
-		} else {
-			this.muzzleOffset = muzzleOffset;
-		}
 		this.visRange = 400.0;
 	}
 
@@ -36,16 +30,18 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	 * update the player
 	 */
 	void update() {
-		super.update(); // check for movement and update the players position and heading
-		if (this.shoot) {
-			if ( (!this.shooting) && (this.bullets > 0) && (this.shotsFired < this.maxShootsPerTime) ) {
-				this.shotsFired++;
-				//this.bullets--;  Unendliche Muniton!
-				this.shooting = true;
-				this.firingBullet = true;
+		if (this.isAlive()) {
+			super.update(); // check for movement and update the players position and heading
+			if (this.shoot) {
+				if ( (!this.shooting) && (this.bullets > 0) && (this.shotsFired < this.maxShootsPerTime) ) {
+					this.shotsFired++;
+					//this.bullets--;  Unendliche Muniton!
+					this.shooting = true;
+					this.firingBullet = true;
+				}
+			} else {
+				this.shooting = false;
 			}
-		} else {
-			this.shooting = false;
 		}
 	}
 
@@ -64,7 +60,6 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	 * kill the player
 	 */
 	void die() {
-		//TODO: Reset player to start or end game
 		this.lives--;
 		this.action = "die";
 	}
@@ -74,7 +69,7 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 	 *
 	 * reset the player to the given location
 	 */
-	void resetTo(num x, num y) {
+	void resetTo(num x, num y, [bool restore = false]) {
 		this.x = x;
 		this.y = y;
 		if (this.centerInGrid) {
@@ -88,6 +83,12 @@ class PlayerCharacter extends CharacterEntity with ArmedCharacter {
 			}
 		}
 		this.rec = new Rectangle(this.x, this.y, this.width, this.height);
+		if (restore) {
+			this.heading = "up";
+			this.health = 100;
+			this.bullets = 10;
+			this.action = "";
+		}
 	}
 
 	/**

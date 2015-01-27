@@ -8,6 +8,7 @@ part of gameentities;
 class Level {
 	// default Settings for all levels
 	static final Map<String,dynamic> defaultSettings = {
+
 		"wall" : {
 			"path" : "shootergame/images/environment/wall/",
 			"animated" : false,
@@ -51,6 +52,7 @@ class Level {
 			"path" : "shootergame/images/environment/bullet/",
 			"animated" : false,
 			"animations" : {},
+			"types" : ["alien", "player"]
 		},
 
 		"muzzleFlash" : {
@@ -82,6 +84,7 @@ class Level {
 					"kill" : false,
 				}
 			},
+			"muzzleOffset" : { "x" : -2, "y" : -16 },
 			"colors" : ["brown", "green", "grey"],
 			"types" : ["shooter", "runner"],
 		},
@@ -89,6 +92,7 @@ class Level {
 		"player" : {
 			"path" : "shootergame/images/player/",
 			"animated" : true,
+			"muzzleOffset" : { "x" : 8, "y" : -23 },
 			"animations" : {
 				"move" : {
 					"steps" : 3,
@@ -99,7 +103,7 @@ class Level {
 					"steps" : 4,
 					"interval" : 150,
 					"type" : "once",
-					"kill" : false,
+					"kill" : true,
 				}
 			}
 		},
@@ -108,15 +112,12 @@ class Level {
 			"path" : "shootergame/images/environment/blood/",
 			"animated" : false,
 			"animations" : {},
+			"types" : ["alien", "player"]
 		},
 
-		"environment" : {
-			"path" : "shootergame/images/environment/",
-			"animated" : false,
-			"animations" : {},
-		},
+		"environmentpath" : "shootergame/images/environment/",
 
-		"wincountdown" : 10,
+		"wincountdown" : 5000,
 	};
 
 	List<List<String>> structure; // the levels structure
@@ -128,6 +129,7 @@ class Level {
 	bool won = false;
 	bool lost = false;
 	Stopwatch wintimer = new Stopwatch();
+	Stopwatch dietimer = new Stopwatch();
 	num width;
 	num height;
 
@@ -138,8 +140,8 @@ class Level {
 	 * [settings] the settings for the level, default: defaultSettings
 	 * [levelname] the name of the level, default: "Alien Shooter Level 1"
 	 */
-	Level ( List<List<String>> this.structure, { num this.width : 1024, num this.height : 768, Map<String,dynamic> settings, String this.levelname : "Alien Shooter Level 1" } ) {
-		if (settings != null) {
+	Level ( List<List<String>> this.structure, { Map<String,dynamic> settings, String this.levelname : "Alien Shooter Level 1", num this.width : 1024, num this.height : 768 } ) {
+		if ( (settings != null) && (settings.length > 0) ) {
 			this.settings = settings;
 		}
 	}
@@ -170,7 +172,11 @@ class Level {
 					} break;
 					case "as" : {
 						Random r = new Random();
-						AlienShooter as = new AlienShooter( (x*64), (y*64), color : this.settings["alien"]["colors"][r.nextInt(this.settings["alien"]["colors"].length)] );
+						AlienShooter as = new AlienShooter( (x*64),
+															(y*64),
+															color : this.settings["alien"]["colors"][r.nextInt(this.settings["alien"]["colors"].length)],
+															offset : new Point (this.settings["alien"]["muzzleOffset"]["x"],this.settings["alien"]["muzzleOffset"]["y"])
+														  );
 						this.entities.add(as);
 					} break;
 					case "ar" : {
@@ -224,63 +230,63 @@ class Level {
 					player.pathBlockedRight = player.pathBlockedRight || (rSize > 0) && (rSize >= tSize) && (rSize >= bSize);
 				}
 			} else if (e is AlienCharacter) {
-				e.entitiesInSight = this.entities.where( (b) {
-					if (e != b) {
-						final Rectangle r = new Rectangle( 	min( e.getCenter().x, b.getCenter().x ),
-															min( e.getCenter().y, b.getCenter().y ),
-															max( e.getCenter().x, b.getCenter().x ) - min( e.getCenter().x, b.getCenter().x ),
-															max( e.getCenter().y, b.getCenter().y ) - min( e.getCenter().y, b.getCenter().y )
-														 );
-						return (   ( e.getCenter().distanceTo(b.getCenter()) <= e.visRange )
-								&& ( ! this.entities.any( (c) => ( (c is Wall) || (c is AlienCharacter) ) && !(c == e) && !(c.rec.intersects(r)) ) )
-						);
+				if (e.isAlive()) {
+					e.entitiesInSight = this.entities.where( (b) {
+						if (e != b) {
+							final Rectangle r = new Rectangle( 	min( e.getCenter().x, b.getCenter().x ),
+																min( e.getCenter().y, b.getCenter().y ),
+																max( e.getCenter().x, b.getCenter().x ) - min( e.getCenter().x, b.getCenter().x ),
+																max( e.getCenter().y, b.getCenter().y ) - min( e.getCenter().y, b.getCenter().y )
+															 );
+							return (   ( e.getCenter().distanceTo(b.getCenter()) <= e.visRange )
+									&& ( ! this.entities.any( (c) => ( (c is Wall) || (c is AlienCharacter) ) && !(c == e) && !(c.rec.intersects(r)) ) )
+							);
+						}
+						return false;
+					}).toList();
+
+
+					final Rectangle r = new Rectangle( 	min( e.getCenter().x, player.getCenter().x ),
+														min( e.getCenter().y, player.getCenter().y ),
+														max( e.getCenter().x, player.getCenter().x ) - min( e.getCenter().x, player.getCenter().x ),
+														max( e.getCenter().y, player.getCenter().y ) - min( e.getCenter().y, player.getCenter().y )
+													 );
+					List<Entity> inLineOfSight = this.entities.where( (c) => ( ( (c is Wall) || (c is AlienCharacter) ) && (c != e) && ( c.rec.intersects(r)) ) ).toList();
+					if (   ( e.getCenter().distanceTo(player.getCenter()) <= e.visRange )
+							&& ( ! this.entities.any( (c) => ( ( (c is Wall) || ( (c is AlienCharacter) && (c.isAlive()) ) ) && (c != e) && ( c.rec.intersects(r)) ) ) )
+					) {
+						e.entitiesInSight.add(player);
 					}
-					return false;
-				}).toList();
 
+					if (e is AlienRunner) {
+						e.pathBlockedDown = false;
+						e.pathBlockedLeft = false;
+						e.pathBlockedRight = false;
+						e.pathBlockedUp = false;
+						this.entities.where( (w) => (w is Wall) && (w.intersects(e)) ).forEach( (w) {
+							final Rectangle col = w.rec.intersection(e.rec);
 
-				final Rectangle r = new Rectangle( 	min( e.getCenter().x, player.getCenter().x ),
-													min( e.getCenter().y, player.getCenter().y ),
-													max( e.getCenter().x, player.getCenter().x ) - min( e.getCenter().x, player.getCenter().x ),
-													max( e.getCenter().y, player.getCenter().y ) - min( e.getCenter().y, player.getCenter().y )
-												 );
-				List<Entity> inLineOfSight = this.entities.where( (c) => ( ( (c is Wall) || (c is AlienCharacter) ) && (c != e) && ( c.rec.intersects(r)) ) ).toList();
-				if (   ( e.getCenter().distanceTo(player.getCenter()) <= e.visRange )
-						&& ( ! this.entities.any( (c) => ( ( (c is Wall) || ( (c is AlienCharacter) && (c.isAlive()) ) ) && (c != e) && ( c.rec.intersects(r)) ) ) )
-				) {
-					e.entitiesInSight.add(player);
-				}
+	    					final Rectangle l = new Rectangle(e.rec.left, e.rec.top, 0, e.rec.height);
+	    					final Rectangle r = new Rectangle(e.rec.left+e.rec.width, e.rec.top, 0, e.rec.height);
+	    					final Rectangle t = new Rectangle(e.rec.left, e.rec.top, e.rec.width, 0);
+	    					final Rectangle b = new Rectangle(e.rec.left, e.rec.top+e.rec.height, e.rec.width, 0);
 
-				if (e is AlienRunner) {
-					e.pathBlockedDown = false;
-					e.pathBlockedLeft = false;
-					e.pathBlockedRight = false;
-					e.pathBlockedUp = false;
-					this.entities.where( (w) => (w is Wall) && (w.intersects(e)) ).forEach( (w) {
-						final Rectangle col = w.rec.intersection(e.rec);
+	    					final Rectangle lInter = col.intersection(l);
+	    					final Rectangle rInter = col.intersection(r);
+	    					final Rectangle tInter = col.intersection(t);
+	    					final Rectangle bInter = col.intersection(b);
 
-    					final Rectangle l = new Rectangle(e.rec.left, e.rec.top, 0, e.rec.height);
-    					final Rectangle r = new Rectangle(e.rec.left+e.rec.width, e.rec.top, 0, e.rec.height);
-    					final Rectangle t = new Rectangle(e.rec.left, e.rec.top, e.rec.width, 0);
-    					final Rectangle b = new Rectangle(e.rec.left, e.rec.top+e.rec.height, e.rec.width, 0);
+	    					final num lSize = (lInter != null) ? lInter.height : 0;
+	    					final num rSize = (rInter != null) ? rInter.height : 0;
+	    					final num tSize = (tInter != null) ? tInter.width : 0;
+	    					final num bSize = (bInter != null) ? bInter.width : 0;
 
-    					final Rectangle lInter = col.intersection(l);
-    					final Rectangle rInter = col.intersection(r);
-    					final Rectangle tInter = col.intersection(t);
-    					final Rectangle bInter = col.intersection(b);
+	    					e.pathBlockedUp = e.pathBlockedUp || (tSize > 0) && (tSize >= rSize) && (tSize >= lSize);
+	    					e.pathBlockedDown = e.pathBlockedDown || (bSize > 0) && (bSize >= rSize) && (bSize >= lSize);
+	    					e.pathBlockedLeft = e.pathBlockedLeft || (lSize > 0) && (lSize >= tSize) && (lSize >= bSize);
+	    					e.pathBlockedRight = e.pathBlockedRight || (rSize > 0) && (rSize >= tSize) && (rSize >= bSize);
+						});
 
-    					final num lSize = (lInter != null) ? lInter.height : 0;
-    					final num rSize = (rInter != null) ? rInter.height : 0;
-    					final num tSize = (tInter != null) ? tInter.width : 0;
-    					final num bSize = (bInter != null) ? bInter.width : 0;
-
-    					e.pathBlockedUp = e.pathBlockedUp || (tSize > 0) && (tSize >= rSize) && (tSize >= lSize);
-    					e.pathBlockedDown = e.pathBlockedDown || (bSize > 0) && (bSize >= rSize) && (bSize >= lSize);
-    					e.pathBlockedLeft = e.pathBlockedLeft || (lSize > 0) && (lSize >= tSize) && (lSize >= bSize);
-    					e.pathBlockedRight = e.pathBlockedRight || (rSize > 0) && (rSize >= tSize) && (rSize >= bSize);
-					});
-
-					if (e.isAlive()) {
 						if (e.isBiting) {
 							e.isBiting = false;
 							if (player.isAlive() && (e.getCenter().distanceTo(player.getCenter()) < e.width)) {
@@ -289,13 +295,10 @@ class Level {
 							}
 						}
 					}
-				} else if (e is AlienShooter) {
-					if (e.isAlive()) {
-						if (e.firingBullet) {
-		    				e.firingBullet = false;
-							newEntities.add(new Bullet(e.getMuzzleCoordinates().x, e.getMuzzleCoordinates().y, e));
-							newEntities.add(new muzzleFlash(e.getMuzzleCoordinates().x, e.getMuzzleCoordinates().y, e));
-						}
+				} else {
+					if (!this.entities.any( (c) => (c is Blood) && (c.owner == e) )) {
+						Blood bloodpool = new Blood(e.x, e.y, e);
+						newEntities.add(bloodpool);
 					}
 				}
 			} else if (e is Bullet) {
@@ -334,6 +337,11 @@ class Level {
 					e.action = "close";
 				}
 			}
+			if ( (e is ArmedCharacter) && (e is CharacterEntity) && (e.isAlive()) && ((e as ArmedCharacter).firingBullet)) {
+				(e as ArmedCharacter).firingBullet = false;
+				newEntities.add(new Bullet((e as ArmedCharacter).getMuzzleCoordinates().x, (e as ArmedCharacter).getMuzzleCoordinates().y, e));
+				newEntities.add(new muzzleFlash(e));
+			}
 			if (!e.alive) {
 				this.killEntities.add(e);
 			}
@@ -342,22 +350,37 @@ class Level {
 		player.update(); // update the player
 		// Boundary-check
 		if (player.isAlive()) {
-			if (player.x > (1013 - player.width)) {
-				player.x = (1013 - player.width);
-			}
-			if (player.x < 10) {
-				player.x = 10;
-			}
-			if (player.y > (757 - player.width)) {
-				player.y = (757 - player.width);
-			}
-			if (player.y < 10) {
-				player.y = 10;
+			if (! this.entities.any( (e) => (e is Exit) && e.intersects(player) )) {
+				if (player.x > (1013 - player.width)) {
+					player.x = (1013 - player.width);
+				}
+				if (player.x < 10) {
+					player.x = 10;
+				}
+				if (player.y > (757 - player.width)) {
+					player.y = (757 - player.width);
+				}
+				if (player.y < 10) {
+					player.y = 10;
+				}
+			} else {
+				if (player.x > (1024 - player.width + 25)) {
+					player.x = (1024 - player.width + 25);
+				}
+				if (player.x < 0 - 25) {
+					player.x = 0 - 25;
+				}
+				if (player.y > (768 - player.width + 25)) {
+					player.y = (768 - player.width + 25);
+				}
+				if (player.y < 0 - 25) {
+					player.y = 0 - 25;
+				}
 			}
 			if (player.firingBullet) {
 				player.firingBullet = false;
 				newEntities.add(new Bullet(player.getMuzzleCoordinates().x, player.getMuzzleCoordinates().y, player));
-				newEntities.add(new muzzleFlash(player.getMuzzleCoordinates().x, player.getMuzzleCoordinates().y, player));
+				newEntities.add(new muzzleFlash(player));
 			}
 
 			player.entitiesInSight = this.entities.where( (b) {
@@ -371,13 +394,24 @@ class Level {
 						&& ( ! this.entities.any( (c) => (c is Wall) && (c != b) && (c.rec.intersects(r)) ) )
 				);
 			}).toList();
-		} else {
-			if (player.lives > 0) {
-				player.health = 100;
-				player.heading = "up";
-				player.resetTo(this.start.x, this.start.y);
-			} else {
-				this.lost = true;
+		}
+
+		if (!player.alive) {
+			if (!this.dietimer.isRunning) {
+				this.dietimer.start();
+				Blood bloodpool = new Blood(player.x, player.y, player);
+				newEntities.add(bloodpool);
+			}
+
+			if (this.dietimer.elapsedMilliseconds > 2000) {
+				this.dietimer.stop();
+				this.dietimer.reset();
+				if (player.lives > 0) {
+					player.alive = true;
+					player.resetTo(this.start.x, this.start.y, true);
+				} else {
+					this.lost = true;
+				}
 			}
 		}
 
@@ -388,5 +422,7 @@ class Level {
 		this.killEntities.forEach( (Entity e) {
 			this.entities.remove(e);
 		});
+
+		this.killEntities.clear();
 	}
 }
