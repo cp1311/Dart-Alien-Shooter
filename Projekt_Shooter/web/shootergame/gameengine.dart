@@ -1,7 +1,7 @@
 library gameengine;
 
 import 'dart:html';
-import 'dart:math';
+import 'dart:convert';
 import 'entities/gameentities.dart';
 
 part 'gamecore.dart';
